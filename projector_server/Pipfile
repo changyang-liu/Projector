@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 django = "==3.0.6"
 pillow = "*"
+djangorestframework = "*"
 
 [dev-packages]
 
