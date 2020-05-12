@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
 import { CardDeck, Card, CardImg, CardTitle, CardBody } from 'reactstrap';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import ProjectPage from './ProjectPage'
 
 class App extends Component {
 
@@ -74,18 +75,11 @@ class App extends Component {
               {indexPage}
             </div>
           )} />
-          {/*TODO: Project page component*/}
-          <Route path='/projects/:projectId' component={ProjectPage} />
+          <Route path='/projects/:projectId' render={(props) => <ProjectPage {...props} projects={projects} />} />
         </Router>
       );
     }
 }
-
-const ProjectPage = ({ match }) => (
-  <div>
-    You are now viewing project #{match.params.projectId}.
-  </div>
-)
 
 const ProjectTile = ({ project }) => (
   <Card>
