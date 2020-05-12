@@ -2,7 +2,7 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
-import { CardDeck, Card, CardImg, CardTitle, CardBody } from 'reactstrap';
+import { Container, Row, Col, Card, CardImg, CardTitle, CardBody } from 'reactstrap';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import ProjectPage from './ProjectPage'
 
@@ -45,34 +45,39 @@ class App extends Component {
       });
     }
 
-    render() {
+    getProjectTiles() {
       const { projects } = this.state;
       let indexPage;
       
       if(projects) {
-        let projectTiles = projects.map(project => (
-          <ProjectTile key={project.id} project={project} />
+        indexPage = projects.map(project => (
+          <Col xs="auto" className="mb-4" key={project.id}>
+            <ProjectTile key={project.id} project={project} />
+          </Col>
         ));
-        indexPage = [];
-
-        while(projectTiles.length > 3) {
-          indexPage.push((
-            <CardDeck className="mx-auto">
-              {projectTiles.splice(0, 4)}
-            </CardDeck>
-          ));
-        }
       } else {
         indexPage = (<div>Loading...</div>);
       }
+
+      return indexPage;
+    }
+
+    render() {
+      const { projects } = this.state;
 
       return (
         <Router>
           {/*Split up index page into separate component?*/}
           <Route exact={true} path='/' render={() => (
             <div>
-              <div className="title"> Projector </div>
-              {indexPage}
+              <div className="title"> 
+                Projector
+              </div>
+              <Container className="mt-4">
+                  <Row className="justify-content-center">
+                    {this.getProjectTiles()}
+                  </Row>
+              </Container>
             </div>
           )} />
           <Route path='/projects/:projectId' render={(props) => <ProjectPage {...props} projects={projects} />} />
