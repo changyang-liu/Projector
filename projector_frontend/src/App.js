@@ -8,8 +8,12 @@ import ProjectPage from './ProjectPage'
 
 class App extends Component {
 
-    state = {
-      projects: null
+    constructor(props) {
+      super(props);
+      this.state = {
+        projects: null
+      }
+      this.handleSearch = this.handleSearch.bind(this);
     }
 
     componentDidMount() {
@@ -45,17 +49,45 @@ class App extends Component {
       });
     }
 
+    handleSearch(event) {
+      let newList = [];
+
+      if (event.target.value !== "") {
+        // search query is not empty, so filter projects by title
+        let currentList = this.state.projects;
+
+        // TODO: make a better search that doesn't search only project titles
+        newList = currentList.filter(project => {
+          const lc = project.title.toLowerCase();
+          const filter = event.target.value.toLowerCase();
+          return lc.includes(filter);
+        });
+
+      } else {
+        // if search query is empty, show all projects
+        newList = this.state.projects;
+      }
+
+      this.setState({
+        filtered: newList
+      });
+    }
+
     getProjectTiles() {
-      const { projects } = this.state;
+      const { projects, filtered } = this.state;
+      const toUse = filtered ? filtered : projects;
+
       let indexPage;
       
       if(projects) {
-        indexPage = projects.map(project => (
+        // Generate project tiles from filtered or projects list
+        indexPage = toUse.map(project => (
           <Col xs="auto" className="mb-4" key={project.id}>
             <ProjectTile key={project.id} project={project} />
           </Col>
         ));
       } else {
+        // Show loading page if projects haven't been fetched yet
         indexPage = (<div>Loading...</div>);
       }
 
@@ -73,6 +105,8 @@ class App extends Component {
               <div className="title"> 
                 Projector
               </div>
+              {/* TODO: improve search styling */}
+              <SearchBox handleSearch={this.handleSearch}></SearchBox>
               <Container className="mt-4">
                   <Row className="justify-content-center">
                     {this.getProjectTiles()}
@@ -95,6 +129,17 @@ const ProjectTile = ({ project }) => (
         <a href={`/projects/${project.id}`} className="stretched-link">{project.description}</a>
       </CardBody>
   </Card>
-)
+);
+
+const SearchBox = ({ handleSearch }) => (
+  <span>
+    <input 
+      type="text"
+      placeholder="Search for projects"
+      onChange={handleSearch}
+      className="search-box"
+    />
+  </span>
+);
 
 export default App;

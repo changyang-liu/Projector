@@ -38,8 +38,19 @@
 }
 
 .title {
-  font-size: 4em;
+  font-size: 60px;
   text-align: center;
+}
+
+.search-box {
+  font-size: 18px;
+  padding: 0.5em 1em;
+  position: absolute;
+  top: 25px;
+  right: 15%;
+  border: 1px solid #999;
+  border-radius: 20px;
+  outline: none;
 }
 
 .card {
