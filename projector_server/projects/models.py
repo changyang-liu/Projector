@@ -34,7 +34,7 @@ class Project(models.Model):
     )
 
     #Optional project fields
-    logo = models.ImageField(upload_to='logos')
+    logo = models.ImageField(upload_to='logos', blank=True)
     description = models.TextField(blank=True)
     video = models.URLField(blank=True) #Youtube URL
     deck = models.URLField(blank=True) #Google slides URL
