@@ -56,7 +56,7 @@ class App extends Component {
       if(projects) {
         // Generate project tiles from filtered or projects list
         indexPage = toUse.map(project => (
-          <Col xs="auto" className="mb-4" key={project.id}>
+          <Col xs="auto" className="mb-4 d-flex align-items-stretch" key={project.id}>
             <ProjectTile key={project.id} project={project} />
           </Col>
         ));
@@ -81,9 +81,9 @@ class App extends Component {
               {/* TODO: improve search styling */}
               <SearchBox handleSearch={this.handleSearch}></SearchBox>
               <Container className="mt-4">
-                  <Row className="justify-content-center">
-                    {this.getProjectTiles()}
-                  </Row>
+                <Row className="justify-content-center">
+                  {this.getProjectTiles()}
+                </Row>
               </Container>
             </div>
           )} />
@@ -98,17 +98,17 @@ const ProjectTile = ({ project }) => {
 
   return (
     <Card>
-        <CardImg variant="top" src={logo} alt="Project Logo" />
-        <CardBody>
-          <CardTitle>
-            {project.name}
-            <div>
-              {/*Neaten the badge layout*/}
-              <Badge color="secondary">{project.category}</Badge>
-            </div>
-          </CardTitle>
-          <a href={`/projects/${project.id}`} className="stretched-link">{project.description}</a>
-        </CardBody>
+      <CardImg variant="top" src={logo} alt="Project Logo" />
+      <CardBody>
+        <CardTitle>
+          {project.name}
+          <div>
+            {/* Neaten the badge layout */}
+            <Badge color="secondary">{project.category}</Badge>
+          </div>
+        </CardTitle>
+        <a href={`/projects/${project.id}`} className="stretched-link">{project.description}</a>
+      </CardBody>
     </Card>
   );
 };
