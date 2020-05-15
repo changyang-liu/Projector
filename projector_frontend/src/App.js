@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { Container, Row, Col, Card, CardImg, CardTitle, CardBody, Badge } from 'reactstrap';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import ProjectPage from './ProjectPage';
+import * as Constants from './constants';
 
 class App extends Component {
 
@@ -17,7 +18,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-      fetch("http://localhost:8000/projects/")
+      fetch(Constants.PROJECT_LIST_URL)
         .then(response => response.json())
         .then(data => this.setState({ projects: data }))
         .catch(err => console.log(err));
@@ -94,7 +95,7 @@ class App extends Component {
 }
 
 const ProjectTile = ({ project }) => {
-  let logo = project.logo ? `http://localhost:8000/${project.logo}` : "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1280px-React-icon.svg.png";
+  let logo = project.logo ? (Constants.PROJECT_LOGO_PATH + project.logo) : Constants.DEFAULT_PROJECT_LOGO;
 
   return (
     <Card>
