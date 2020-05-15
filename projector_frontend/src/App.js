@@ -2,9 +2,9 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
-import { Container, Row, Col, Card, CardImg, CardTitle, CardBody } from 'reactstrap';
+import { Container, Row, Col, Card, CardImg, CardTitle, CardBody, Badge } from 'reactstrap';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import ProjectPage from './ProjectPage'
+import ProjectPage from './ProjectPage';
 
 class App extends Component {
 
@@ -17,54 +17,28 @@ class App extends Component {
     }
 
     componentDidMount() {
-      // TODO: Fetch project data
-      this.setState({
-        projects: [
-        {
-          id: 1,
-          title: "Projector",
-          description: "This is just a sample description so that you can figure out what's going on here."
-        },
-        {
-          id: 2,
-          title: "Another Project",
-          description: "This is just a sample description so that you can figure out what's going on here."
-        },
-        {
-          id: 3,
-          title: "Project #3",
-          description: "This is just a sample description so that you can figure out what's going on here."
-        },
-        {
-          id: 4,
-          title: "Project #4",
-          description: "This is just a sample description so that you can figure out what's going on here."
-        },
-        {
-          id: 5,
-          title: "Project #5",
-          description: "This is just a sample description so that you can figure out what's going on here."
-        }
-        ]
-      });
+      fetch("http://localhost:8000/projects/")
+        .then(response => response.json())
+        .then(data => this.setState({ projects: data }))
+        .catch(err => console.log(err));
     }
 
     handleSearch(event) {
       let newList = [];
 
       if (event.target.value !== "") {
-        // search query is not empty, so filter projects by title
+        // Search query is not empty, so filter projects by title
         let currentList = this.state.projects;
 
         // TODO: make a better search that doesn't search only project titles
         newList = currentList.filter(project => {
-          const lc = project.title.toLowerCase();
+          const lc = project.name.toLowerCase();
           const filter = event.target.value.toLowerCase();
           return lc.includes(filter);
         });
 
       } else {
-        // if search query is empty, show all projects
+        // If search query is empty, show all projects
         newList = this.state.projects;
       }
 
@@ -99,7 +73,6 @@ class App extends Component {
 
       return (
         <Router>
-          {/*Split up index page into separate component?*/}
           <Route exact={true} path='/' render={() => (
             <div>
               <div className="title"> 
@@ -120,16 +93,25 @@ class App extends Component {
     }
 }
 
-const ProjectTile = ({ project }) => (
-  <Card>
-      {/* TODO: project logo */}
-      <CardImg variant="top" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1280px-React-icon.svg.png" alt="Project Logo" />
-      <CardBody>
-        <CardTitle>{project.title}</CardTitle>
-        <a href={`/projects/${project.id}`} className="stretched-link">{project.description}</a>
-      </CardBody>
-  </Card>
-);
+const ProjectTile = ({ project }) => {
+  let logo = project.logo ? `http://localhost:8000/${project.logo}` : "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1280px-React-icon.svg.png";
+
+  return (
+    <Card>
+        <CardImg variant="top" src={logo} alt="Project Logo" />
+        <CardBody>
+          <CardTitle>
+            {project.name}
+            <div>
+              {/*Neaten the badge layout*/}
+              <Badge color="secondary">{project.category}</Badge>
+            </div>
+          </CardTitle>
+          <a href={`/projects/${project.id}`} className="stretched-link">{project.description}</a>
+        </CardBody>
+    </Card>
+  );
+};
 
 const SearchBox = ({ handleSearch }) => (
   <span>
