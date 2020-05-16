@@ -7,6 +7,10 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import ProjectPage from './ProjectPage';
 import * as Constants from './constants';
 
+import ProjectForm from './components/project-form.js'
+
+
+
 class App extends Component {
 
     constructor(props) {
@@ -89,6 +93,7 @@ class App extends Component {
             </div>
           )} />
           <Route path='/projects/:projectId' render={(props) => <ProjectPage {...props} projects={projects} />} />
+          <Route path='/projects/create' render={() => <ProjectForm />} />
         </Router>
       );
     }
