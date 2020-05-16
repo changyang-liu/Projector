@@ -8,7 +8,6 @@ import ProjectPage from './ProjectPage';
 import * as Constants from './constants';
 
 class App extends Component {
-
     constructor(props) {
       super(props);
       this.state = {
@@ -70,8 +69,6 @@ class App extends Component {
     }
 
     render() {
-      const { projects } = this.state;
-
       return (
         <Router>
           <Route exact={true} path='/' render={() => (
@@ -88,7 +85,7 @@ class App extends Component {
               </Container>
             </div>
           )} />
-          <Route path='/projects/:projectId' render={(props) => <ProjectPage {...props} projects={projects} />} />
+          <Route path='/projects/:projectId' component={ProjectPage} />
         </Router>
       );
     }
