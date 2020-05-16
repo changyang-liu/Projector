@@ -24,14 +24,14 @@ class App extends Component {
     }
 
     handleSearch(event) {
-      let newList = [];
+      let filteredList = [];
 
-      if (event.target.value !== "") {
+      if (this.state.projects && event.target.value !== "") {
         // Search query is not empty, so filter projects by title
         let currentList = this.state.projects;
 
         // TODO: make a better search that doesn't search only project titles
-        newList = currentList.filter(project => {
+        filteredList = currentList.filter(project => {
           const lc = project.name.toLowerCase();
           const filter = event.target.value.toLowerCase();
           return lc.includes(filter);
@@ -39,11 +39,11 @@ class App extends Component {
 
       } else {
         // If search query is empty, show all projects
-        newList = this.state.projects;
+        filteredList = this.state.projects;
       }
 
       this.setState({
-        filtered: newList
+        filtered: filteredList
       });
     }
 
@@ -73,11 +73,12 @@ class App extends Component {
         <Router>
           <Route exact={true} path='/' render={() => (
             <div>
-              <div className="title"> 
-                Projector
+              <div className="header"> 
+                <span className="title">
+                  Projector
+                </span>
+                <SearchBox handleSearch={this.handleSearch} isDisabled={!this.state.projects} />
               </div>
-              {/* TODO: improve search styling */}
-              <SearchBox handleSearch={this.handleSearch}></SearchBox>
               <Container className="mt-4">
                 <Row className="justify-content-center">
                   {this.getProjectTiles()}
@@ -92,7 +93,8 @@ class App extends Component {
 }
 
 const ProjectTile = ({ project }) => {
-  let logo = project.logo ? (Constants.PROJECT_LOGO_PATH + project.logo) : Constants.DEFAULT_PROJECT_LOGO;
+  let logo = Constants.PROJECT_LOGO_PATH;
+  logo += project.logo ? project.logo : Constants.DEFAULT_PROJECT_LOGO;
 
   return (
     <Card>
@@ -111,13 +113,14 @@ const ProjectTile = ({ project }) => {
   );
 };
 
-const SearchBox = ({ handleSearch }) => (
+const SearchBox = ({ handleSearch, isDisabled }) => (
   <span>
     <input 
       type="text"
       placeholder="Search for projects"
       onChange={handleSearch}
       className="search-box"
+      disabled={isDisabled}
     />
   </span>
 );
