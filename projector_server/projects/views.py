@@ -12,7 +12,6 @@ from projects.serializers import ProjectSerializer
 class BaseProjectView(APIView):
     parser_classes = [FormParser, MultiPartParser]
 
-    @csrf_exempt
     def get(self, request, *args, **kwargs):
         """
         List all projects
@@ -21,7 +20,6 @@ class BaseProjectView(APIView):
         serializer = ProjectSerializer(project_list, many=True)
         return JsonResponse(serializer.data, safe=False)
 
-    @csrf_exempt
     def post(self, request, *args, **kwargs):
         """
         Create a new project
@@ -36,7 +34,6 @@ class BaseProjectView(APIView):
 class DetailedProjectView(APIView):
     parser_classes = [FormParser, MultiPartParser]
 
-    @csrf_exempt
     def get(self, request, pk, *args, **kwargs):
         """
         Get one particular project
@@ -48,7 +45,6 @@ class DetailedProjectView(APIView):
         serializer = ProjectSerializer(project)
         return JsonResponse(serializer.data, safe=False)
 
-    @csrf_exempt
     def put(self, request, pk, *args, **kwargs):
         """
         Edit a project
@@ -63,10 +59,9 @@ class DetailedProjectView(APIView):
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
 
-    @csrf_exempt
     def delete(self, request, pk, *args, **kwargs):
         """
-        Create a new project
+        Delete a project
         """
         try:
             project = Project.objects.get(pk=pk)
