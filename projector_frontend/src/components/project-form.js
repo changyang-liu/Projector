@@ -3,33 +3,26 @@ import '../form.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { withRouter } from 'react-router-dom';
 
 class ProjectForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state={
-      formFields: {
-        name: '',
-      }
-    }
-  }
-
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.target);
     const url = 'http://127.0.0.1:8080/projects/';
-    fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
       },
       body: data
-    })
-    .then((response) => {
-      //TODO: Add redirect for successful response
-      alert(response.status);
-      console.log(response);
     });
+    if(response.status === 201){
+      const json = await response.json();
+      this.props.history.push('/' + json.id.toString());
+    }else{
+      alert("Error: failed to submit");
+    }
   }
 
   render() {
@@ -109,4 +102,4 @@ class ProjectForm extends Component {
   }
 }
 
-export default ProjectForm
+export default withRouter(ProjectForm);
