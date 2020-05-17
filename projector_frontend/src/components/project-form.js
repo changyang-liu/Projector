@@ -4,12 +4,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
+import * as Constants from '../constants';
 
 class ProjectForm extends Component {
   handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.target);
-    const url = 'http://127.0.0.1:8080/projects/';
+    const url = Constants.PROJECT_LIST_URL;
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -19,7 +20,10 @@ class ProjectForm extends Component {
     });
     if(response.status === 201){
       const json = await response.json();
-      this.props.history.push('/' + json.id.toString());
+      setTimeout(() => {
+        this.props.history.push('/projects/' + json.id.toString());
+        alert("Successfully created");
+      }, 200);
     }else{
       alert("Error: failed to submit");
     }

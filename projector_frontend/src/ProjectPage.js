@@ -35,7 +35,7 @@ class ProjectPage extends Component {
         if (project === undefined) {
             // This means that we are still waiting for the data to be fetched.
             // This could show some loading icon/message if we want.
-            return null;
+            return <p>Loading...</p>;
         }
 
         if (project.failed) {

@@ -2,9 +2,10 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
-import { Container, Row, Col, Card, CardImg, CardTitle, CardBody, Badge } from 'reactstrap';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Container, Row, Col, Card, CardImg, CardTitle, CardBody, Badge, Button } from 'reactstrap';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import ProjectPage from './ProjectPage';
+import ProjectForm from './components/project-form'
 import * as Constants from './constants';
 
 class App extends Component {
@@ -73,11 +74,14 @@ class App extends Component {
         <Router>
           <Route exact={true} path='/' render={() => (
             <div>
-              <div className="header"> 
+              <div className="header">
                 <span className="title">
                   Projector
                 </span>
                 <SearchBox handleSearch={this.handleSearch} isDisabled={!this.state.projects} />
+              </div>
+              <div id="new-project">
+                  <Link to='/projects/create' className="btn btn-primary">Add new project</Link>
               </div>
               <Container className="mt-4">
                 <Row className="justify-content-center">
@@ -87,6 +91,7 @@ class App extends Component {
             </div>
           )} />
           <Route path='/projects/:projectId' component={ProjectPage} />
+          <Route path='/projects/create' component={ProjectForm} />
         </Router>
       );
     }
