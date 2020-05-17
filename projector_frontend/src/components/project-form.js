@@ -7,21 +7,61 @@ import { withRouter } from 'react-router-dom';
 import * as Constants from '../constants';
 
 class ProjectForm extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      formFields: {
+        name: '',
+        owner: '',
+        category: '',
+        description: '',
+        video: '',
+        deck: '',
+        logo: '',
+      }
+    }
+  }
+
+  componentDidMount = async () => {
+    if(this.props.edit){
+      const res = await fetch(`${Constants.PROJECT_LIST_URL}${this.props.match.params.projectId}`);
+      const json = await res.json();
+      const formFields = this.state.formFields;
+      for(let key in formFields){
+        formFields[key] = json[key];
+      }
+      this.setState({formFields})
+    }
+  }
+
   handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.target);
-    const url = Constants.PROJECT_LIST_URL;
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-      },
-      body: data
-    });
+    let url = Constants.PROJECT_LIST_URL;
+    let response;
+    if(this.props.edit){
+      url += this.props.match.params.projectId;
+      response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: data
+      });
+
+    }else{
+      response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: data
+      });
+    }
     if(response.status === 201){
       const json = await response.json();
       this.props.history.push('/projects/' + json.id.toString());
-      alert("Successfully created");
+      alert(this.props.edit ? "Successfully edited" : "Successfully created");
     }else{
       alert("Error: failed to submit");
     }
@@ -38,6 +78,7 @@ class ProjectForm extends Component {
             name='name'
             id='namefield'
             placeholder='Enter name here'
+            defaultValue={this.state.formFields.name}
             required
           />
 
@@ -47,6 +88,7 @@ class ProjectForm extends Component {
             name='owner'
             id='ownerfield'
             placeholder='Enter owner here'
+            defaultValue={this.state.formFields.owner}
             required
           />
 
@@ -55,6 +97,7 @@ class ProjectForm extends Component {
             type='select'
             name='category'
             id='catselect'
+            defaultValue={this.state.formFields.category} //NOTE this does not work for whatever reason
             required
           >
             <option value='GEN'>General</option>
@@ -71,6 +114,7 @@ class ProjectForm extends Component {
             type='textarea'
             name='description'
             id='descfield'
+            defaultValue={this.state.formFields.description}
           />
 
           <Label for='vidfield'>Video</Label>
@@ -79,6 +123,7 @@ class ProjectForm extends Component {
             name='video'
             id='vidfield'
             placeholder='Youtube URL'
+            defaultValue={this.state.formFields.video}
           />
 
           <Label for='deckfield'>Deck</Label>
@@ -87,6 +132,7 @@ class ProjectForm extends Component {
             name='deck'
             id='deckfield'
             placeholder='Google Slides URL'
+            defaultValue={this.state.formFields.deck}
           />
 
           <Label for='logofield'>Upload Logo</Label>

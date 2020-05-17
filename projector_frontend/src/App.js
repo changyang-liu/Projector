@@ -93,6 +93,11 @@ class App extends Component {
             )} />
             <Route exact path='/projects/create' component={ProjectForm} />
             <Route exact path='/projects/:projectId' component={ProjectPage} />
+            <Route exact path='/projects/:projectId/edit'
+              render={() => (
+                <ProjectForm edit={true}/>
+              )}
+            />
           </Switch>
         </Router>
       );
