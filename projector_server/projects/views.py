@@ -1,5 +1,4 @@
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, JsonResponse, Http404
 
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
 from rest_framework.views import APIView
@@ -34,14 +33,17 @@ class BaseProjectView(APIView):
 class DetailedProjectView(APIView):
     parser_classes = [FormParser, MultiPartParser]
 
+    def get_object(self, pk, *args, **kwargs):
+        try:
+            return Project.objects.get(pk=pk)
+        except Project.DoesNotExist:
+            raise Http404
+
     def get(self, request, pk, *args, **kwargs):
         """
         Get one particular project
         """
-        try:
-            project = Project.objects.get(pk=pk)
-        except Project.DoesNotExist:
-            return HttpResponse(status=404)
+        project = self.get_object(pk)
         serializer = ProjectSerializer(project)
         return JsonResponse(serializer.data, safe=False)
 
@@ -49,10 +51,7 @@ class DetailedProjectView(APIView):
         """
         Edit a project
         """
-        try:
-            project = Project.objects.get(pk=pk)
-        except Project.DoesNotExist:
-            return HttpResponse(status=404)
+        project = self.get_object(pk)
         serializer = ProjectSerializer(project, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -63,9 +62,6 @@ class DetailedProjectView(APIView):
         """
         Delete a project
         """
-        try:
-            project = Project.objects.get(pk=pk)
-        except Project.DoesNotExist:
-            return HttpResponse(status=404)
+        project = self.get_object(pk)
         project.delete()
         return HttpResponse(status=204)
