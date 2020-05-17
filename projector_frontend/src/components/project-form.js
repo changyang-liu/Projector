@@ -38,26 +38,20 @@ class ProjectForm extends Component {
     event.preventDefault();
     const data = new FormData(event.target);
     let url = Constants.PROJECT_LIST_URL;
-    let response;
+    let method;
     if(this.props.edit){
       url += this.props.match.params.projectId;
-      response = await fetch(url, {
-        method: 'PUT',
-        headers: {
-          'Accept': 'application/json',
-        },
-        body: data
-      });
-
+      method ='PUT'
     }else{
-      response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-        },
-        body: data
-      });
+      method='POST'
     }
+    const response = await fetch(url, {
+      method: method,
+      headers: {
+        'Accept': 'application/json',
+      },
+      body: data
+    });
     if(response.status === 201){
       const json = await response.json();
       this.props.history.push('/projects/' + json.id.toString());
