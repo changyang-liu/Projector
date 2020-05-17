@@ -20,10 +20,8 @@ class ProjectForm extends Component {
     });
     if(response.status === 201){
       const json = await response.json();
-      setTimeout(() => {
-        this.props.history.push('/projects/' + json.id.toString());
-        alert("Successfully created");
-      }, 200);
+      this.props.history.push('/projects/' + json.id.toString());
+      alert("Successfully created");
     }else{
       alert("Error: failed to submit");
     }

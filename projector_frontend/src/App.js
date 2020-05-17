@@ -3,7 +3,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
 import { Container, Row, Col, Card, CardImg, CardTitle, CardBody, Badge, Button } from 'reactstrap';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import ProjectPage from './ProjectPage';
 import ProjectForm from './components/project-form'
 import * as Constants from './constants';
@@ -53,7 +53,7 @@ class App extends Component {
       const toUse = filtered ? filtered : projects;
 
       let indexPage;
-      
+
       if(projects) {
         // Generate project tiles from filtered or projects list
         indexPage = toUse.map(project => (
@@ -72,26 +72,28 @@ class App extends Component {
     render() {
       return (
         <Router>
-          <Route exact={true} path='/' render={() => (
-            <div>
-              <div className="header">
-                <span className="title">
-                  Projector
-                </span>
-                <SearchBox handleSearch={this.handleSearch} isDisabled={!this.state.projects} />
+          <Switch>
+            <Route exact={true} path='/' render={() => (
+              <div>
+                <div className="header">
+                  <span className="title">
+                    Projector
+                  </span>
+                  <SearchBox handleSearch={this.handleSearch} isDisabled={!this.state.projects} />
+                </div>
+                <div id="new-project">
+                    <Link to='/projects/create' className="btn btn-primary">Add new project</Link>
+                </div>
+                <Container className="mt-4">
+                  <Row className="justify-content-center">
+                    {this.getProjectTiles()}
+                  </Row>
+                </Container>
               </div>
-              <div id="new-project">
-                  <Link to='/projects/create' className="btn btn-primary">Add new project</Link>
-              </div>
-              <Container className="mt-4">
-                <Row className="justify-content-center">
-                  {this.getProjectTiles()}
-                </Row>
-              </Container>
-            </div>
-          )} />
-          <Route path='/projects/:projectId' component={ProjectPage} />
-          <Route path='/projects/create' component={ProjectForm} />
+            )} />
+            <Route exact path='/projects/create' component={ProjectForm} />
+            <Route exact path='/projects/:projectId' component={ProjectPage} />
+          </Switch>
         </Router>
       );
     }
