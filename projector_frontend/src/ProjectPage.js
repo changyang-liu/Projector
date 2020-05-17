@@ -3,6 +3,7 @@ import './App.css';
 import React, { Component } from 'react';
 import { Badge, Button } from 'reactstrap';
 import * as Constants from './constants';
+import { Link } from 'react-router-dom';
 
 class ProjectPage extends Component {
     constructor(props) {
@@ -50,12 +51,16 @@ class ProjectPage extends Component {
                     <p>
                         Category <Badge color="secondary">{data.category}</Badge>
                     </p>
+
+                    {/* TODO: Only one of these buttons should be visible at any time */}
                     <Button
                         color="primary"
                         onClick={() => alert('Joining Project...')}
                     >
                         Join {data.name}!
-                </Button>
+                    </Button>
+                    <Link className='btn btn-secondary' to={`/projects/${this.props.match.params.projectId}/edit`}>Edit</Link>
+
                 </div>
                 <div className="ProjectPage-rightpanel">
                     <h3 className="text-center">{data.name}</h3>
