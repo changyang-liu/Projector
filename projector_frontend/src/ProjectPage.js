@@ -5,13 +5,16 @@ import { Badge, Button } from 'reactstrap';
 import * as Constants from './constants';
 import { Link } from 'react-router-dom';
 import YouTube from 'react-youtube';
+import MemberModal from './components/MemberModal';
 
 class ProjectPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
             project: undefined,
+            showMembers: false,
         };
+        this.toggleMemberList = this.toggleMemberList.bind(this);
     }
 
     componentDidMount() {
@@ -30,6 +33,12 @@ class ProjectPage extends Component {
                 console.log(error);
                 this.setState({ project: { failed: true, error: error } });
             });
+    }
+
+    toggleMemberList() {
+        this.setState({
+            showMembers: !this.state.showMembers,
+        });
     }
 
     render() {
@@ -65,7 +74,6 @@ class ProjectPage extends Component {
         }
 
         const logoUrl = data.logo !== Constants.DEFAULT_PROJECT_LOGO ? Constants.PROJECT_LOGO_PATH + data.logo : null;
-        console.log(logoUrl);
         return (
             <div className="ProjectPage-container">
                 <div className="ProjectPage-leftpanel">
@@ -75,6 +83,7 @@ class ProjectPage extends Component {
                     </p>
 
                     {/* TODO: Only one of these buttons should be visible at any time */}
+                    {/* TODO: Join project */}
                     <Button color="primary" onClick={() => alert('Joining Project...')}>
                         Join {data.name}!
                     </Button>
@@ -86,6 +95,12 @@ class ProjectPage extends Component {
                     >
                         Edit
                     </Link>
+                    <Button
+                        color="primary"
+                        onClick={this.toggleMemberList}
+                    >
+                        See Who's Joined
+                    </Button>
                 </div>
                 <div className="ProjectPage-rightpanel">
                     <div
@@ -106,12 +121,16 @@ class ProjectPage extends Component {
                         )}
                         {slidesEmbedUrl && (
                             <div className="ProjectPage-slides-container">
-                                <iframe src={slidesEmbedUrl} width="100%" height="100%" allowFullScreen={true} />
+                                <iframe title="Project Slides" src={slidesEmbedUrl} width="100%" height="100%" allowFullScreen={true} />
                             </div>
                         )}
                     </div>
                     <p style={{ marginTop: 16 }}>{data.description}</p>
                 </div>
+                <MemberModal 
+                    open={this.state.showMembers}
+                    onClick={this.toggleMemberList}
+                />
             </div>
         );
     }
