@@ -96,7 +96,7 @@ class ProjectForm extends Component {
           >
             <option value='GEN'>General</option>
             <option value='TEC'>Technology</option>
-            <option value='SER'>Service</option>
+            <option value='SVC'>Service</option>
             <option value='MED'>Media</option>
             <option value='GAM'>Games</option>
           </Input>
