@@ -2,7 +2,16 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
-import { Container, Row, Col, Card, CardImg, CardTitle, CardBody, Badge, Button } from 'reactstrap';
+import { 
+  Container, 
+  Row, 
+  Col, 
+  Card, 
+  CardImg, 
+  CardTitle, 
+  CardBody, 
+  Badge 
+} from 'reactstrap';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import ProjectPage from './ProjectPage';
 import ProjectForm from './components/project-form'
@@ -76,9 +85,12 @@ class App extends Component {
             <Route exact={true} path='/' render={() => (
               <div>
                 <div className="top">
-                  <SearchBox handleSearch={this.handleSearch} isDisabled={!this.state.projects} />
+                  <SearchBox handleSearch={this.handleSearch} disabled={!this.state.projects} />
                   <span id="new-project">
-                    <Link to='/projects/create' className="btn btn-outline-primary">Add new project</Link>
+                    {this.state.projects ? 
+                      <Link to='/projects/create' className="btn btn-outline-primary">Add new project</Link> :
+                      <Link to='/projects/create' className="btn btn-outline-primary" style={{ pointerEvents: 'none' }}>Add new project</Link>
+                    }
                   </span>
                 </div>
                 <Container className="mt-4">
@@ -122,14 +134,14 @@ const ProjectTile = ({ project }) => {
   );
 };
 
-const SearchBox = ({ handleSearch, isDisabled }) => (
+const SearchBox = ({ handleSearch, disabled }) => (
   <span>
     <input 
       type="text"
       placeholder="Search for projects"
       onChange={handleSearch}
       id="search-box"
-      disabled={isDisabled}
+      disabled={disabled}
     />
   </span>
 );
