@@ -75,14 +75,11 @@ class App extends Component {
           <Switch>
             <Route exact={true} path='/' render={() => (
               <div>
-                <div className="header">
-                  <span className="title">
-                    Projector
-                  </span>
+                <div className="top">
                   <SearchBox handleSearch={this.handleSearch} isDisabled={!this.state.projects} />
-                </div>
-                <div id="new-project">
-                    <Link to='/projects/create' className="btn btn-primary">Add new project</Link>
+                  <span id="new-project">
+                    <Link to='/projects/create' className="btn btn-outline-primary">Add new project</Link>
+                  </span>
                 </div>
                 <Container className="mt-4">
                   <Row className="justify-content-center">
@@ -131,7 +128,7 @@ const SearchBox = ({ handleSearch, isDisabled }) => (
       type="text"
       placeholder="Search for projects"
       onChange={handleSearch}
-      className="search-box"
+      id="search-box"
       disabled={isDisabled}
     />
   </span>
