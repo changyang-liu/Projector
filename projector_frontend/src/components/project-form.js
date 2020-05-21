@@ -74,6 +74,7 @@ class ProjectForm extends Component {
             id='namefield'
             placeholder='Enter name here'
             defaultValue={this.state.formFields.name}
+            maxLength={Constants.MAX_PROJECT_LENGTH}
             required
           />
 
@@ -84,6 +85,7 @@ class ProjectForm extends Component {
             id='ownerfield'
             placeholder='Enter owner here'
             defaultValue={this.state.formFields.owner}
+            maxLength={Constants.MAX_USER_LENGTH}
             required
           />
 
@@ -110,6 +112,7 @@ class ProjectForm extends Component {
             name='blurb'
             id='blurbfield'
             defaultValue={this.state.formFields.blurb}
+            maxLength={Constants.MAX_BLURB_LENGTH}
           />
 
           <Label for='descfield'>Description</Label>
