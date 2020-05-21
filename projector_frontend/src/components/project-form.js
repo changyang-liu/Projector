@@ -63,6 +63,8 @@ class ProjectForm extends Component {
   }
 
   render() {
+    const canRenderCategory = ((this.props.edit && this.state.formFields.category !== "") || !this.props.edit);
+
     return(
       <Form onSubmit={this.handleSubmit}>
         <FormGroup>
@@ -90,11 +92,12 @@ class ProjectForm extends Component {
           />
 
           <Label for='catselect'>Select Category*</Label>
+          {canRenderCategory && 
           <Input
             type='select'
             name='category'
             id='catselect'
-            defaultValue={this.state.formFields.category} //NOTE this does not work for whatever reason
+            defaultValue={this.state.formFields.category}
             required
           >
             <option value='GEN'>General</option>
@@ -103,6 +106,7 @@ class ProjectForm extends Component {
             <option value='MED'>Media</option>
             <option value='GAM'>Games</option>
           </Input>
+          }
 
           <h3 id='header2'>More info</h3>
 
