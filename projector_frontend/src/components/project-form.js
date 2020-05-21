@@ -14,6 +14,7 @@ class ProjectForm extends Component {
         name: '',
         owner: '',
         category: '',
+        blurb: '',
         description: '',
         video: '',
         deck: '',
@@ -102,6 +103,14 @@ class ProjectForm extends Component {
           </Input>
 
           <h3 id='header2'>More info</h3>
+
+          <Label for='blurbfield'>Blurb</Label>
+          <Input
+            type='text'
+            name='blurb'
+            id='blurbfield'
+            defaultValue={this.state.formFields.blurb}
+          />
 
           <Label for='descfield'>Description</Label>
           <Input

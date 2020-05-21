@@ -128,7 +128,7 @@ const ProjectTile = ({ project }) => {
             <Badge color="secondary">{project.category}</Badge>
           </div>
         </CardTitle>
-        <a href={`/projects/${project.id}`} className="stretched-link">{project.description}</a>
+        <a href={`/projects/${project.id}`} className="stretched-link">{project.blurb}</a>
       </CardBody>
     </Card>
   );
