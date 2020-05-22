@@ -2,6 +2,7 @@ from django.http import HttpResponse, JsonResponse, Http404
 
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from projects.models import Project
 from projects.serializers import ProjectSerializer
@@ -10,6 +11,7 @@ from projects.serializers import ProjectSerializer
 
 class BaseProjectView(APIView):
     parser_classes = [FormParser, MultiPartParser]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request, *args, **kwargs):
         """
@@ -32,6 +34,7 @@ class BaseProjectView(APIView):
 
 class DetailedProjectView(APIView):
     parser_classes = [FormParser, MultiPartParser]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_object(self, pk, *args, **kwargs):
         try:
