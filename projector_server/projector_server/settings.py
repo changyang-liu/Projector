@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'projects',
     'oauth',
+    'userprofile',
 ]
 
 MIDDLEWARE = [

@@ -23,6 +23,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
     path('projects/', include('projects.urls')),
+    path('users/', include('userprofile.urls')),
     path('social/google-oauth2/', include('oauth.urls')),
     path('admin/', admin.site.urls),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
