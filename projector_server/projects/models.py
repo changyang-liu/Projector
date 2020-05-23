@@ -1,15 +1,17 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from django.contrib.auth.models import User
+#from userprofile import UserProfile
+
 class Project(models.Model):
 
     # Main Fields
     name = models.CharField(max_length=100)
     created_at = models.DateTimeField('Created At', auto_now_add=True)
     last_modified = models.DateTimeField('Last Modified', auto_now=True)
-    owner = models.CharField(max_length=100)
-    #owner = models.ForeignKey(User) #TODO: Change to this later after users are implemented
-    #members = models.ManyToManyField(User) #TODO: Add this in after users are implemented
+    owner = models.ForeignKey(User, related_name='owned_projects', on_delete=models.CASCADE)
+    members = models.ManyToManyField(User, related_name='member_of_projects', blank=True)
 
     #Choice fields
     class ProjectCategory(models.TextChoices):
@@ -44,4 +46,3 @@ class Project(models.Model):
     #Methods
     def __str__(self):
         return self.name
-
