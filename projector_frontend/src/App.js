@@ -35,21 +35,26 @@ class App extends Component {
 
     handleSearch(event) {
       let filteredList = [];
+      let query = event.target.value;
+      const { projects } = this.state;
 
-      if (this.state.projects && event.target.value !== "") {
+      if (projects && query !== "") {
         // Search query is not empty, so filter projects by title
-        let currentList = this.state.projects;
+        query = query.toLowerCase().split(" ");
 
-        // TODO: make a better search that doesn't search only project titles
-        filteredList = currentList.filter(project => {
-          const lc = project.name.toLowerCase();
-          const filter = event.target.value.toLowerCase();
-          return lc.includes(filter);
+        // TODO: search + sort by relevancy?
+        filteredList = projects.filter(project => {
+          const projectName = project.name.toLowerCase();
+          const projectBlurb = project.blurb.toLowerCase();
+          const projectDescription = project.description.toLowerCase();
+          return query.some(term => (projectName.includes(term) ||
+                                     projectBlurb.includes(term) ||
+                                     projectDescription.includes(term)));
         });
 
       } else {
         // If search query is empty, show all projects
-        filteredList = this.state.projects;
+        filteredList = projects;
       }
 
       this.setState({
