@@ -1,7 +1,7 @@
 import './App.css';
 
 import React, { Component } from 'react';
-import { Badge, Button } from 'reactstrap';
+import { Badge, Button, Media } from 'reactstrap';
 import * as Constants from './constants';
 import { Link } from 'react-router-dom';
 import YouTube from 'react-youtube';
@@ -81,7 +81,6 @@ class ProjectPage extends Component {
                     <p>
                         Category <Badge color="secondary">{data.category}</Badge>
                     </p>
-
                     {/* TODO: Only one of these buttons should be visible at any time */}
                     {/* TODO: Join project */}
                     <Button color="primary" onClick={() => alert('Joining Project...')}>
@@ -95,24 +94,12 @@ class ProjectPage extends Component {
                     >
                         Edit
                     </Link>
-                    <Button
-                        color="primary"
-                        onClick={this.toggleMemberList}
-                    >
+                    <Button color="primary" onClick={this.toggleMemberList}>
                         See Who's Joined
                     </Button>
                 </div>
                 <div className="ProjectPage-rightpanel">
-                    <div
-                        className="ProjectPage-header-container"
-                        style={{
-                            backgroundImage: `${
-                                logoUrl
-                                    ? `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${logoUrl})`
-                                    : 'linear-gradient(to bottom, #003b5c, #005587, #2774ae, #8bb8e8, #daebfe)'
-                            }`,
-                        }}
-                    >
+                    <div className="ProjectPage-header-container">
                         <h1 className="ProjectPage-title">{data.name}</h1>
                     </div>
                     <div className="ProjectPage-media-container">
@@ -127,10 +114,7 @@ class ProjectPage extends Component {
                     </div>
                     <p style={{ marginTop: 16 }}>{data.description}</p>
                 </div>
-                <MemberModal 
-                    open={this.state.showMembers}
-                    onClick={this.toggleMemberList}
-                />
+                <MemberModal open={this.state.showMembers} onClick={this.toggleMemberList} />
             </div>
         );
     }
