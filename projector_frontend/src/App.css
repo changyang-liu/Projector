@@ -101,19 +101,19 @@
 }
 
 .ProjectPage-header-container {
-  height: 350px;
-  background-size: cover;
-  background-repeat: no-repeat;
+  /* height: 350px; */
+  /* background-size: cover; */
+  /* background-repeat: no-repeat; */
 }
 
 .ProjectPage-title {
-  color: rgb(255, 255, 255);
-  text-shadow: 2px 2px 5px black;
+  /* color: rgb(255, 255, 255); */
+  /* text-shadow: 2px 2px 5px black; */
   text-align: center;
-  height: 350px;
-  font-size: 150px;
-  font-weight: bolder;
-  border: 4px solid;
+  /* height: 350px; */
+  /* font-size: 150px; */
+  /* font-weight: bolder; */
+  /* border: 4px solid; */
   margin: 0;
 }
 
