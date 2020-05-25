@@ -1,7 +1,7 @@
 import './App.css';
 
 import React, { Component } from 'react';
-import { Badge, Button, Media } from 'reactstrap';
+import { Badge, Button } from 'reactstrap';
 import * as Constants from './constants';
 import { Link } from 'react-router-dom';
 import YouTube from 'react-youtube';
@@ -73,11 +73,11 @@ class ProjectPage extends Component {
             // There's no slides, or the URL is malformed
         }
 
-        const logoUrl = data.logo !== Constants.DEFAULT_PROJECT_LOGO ? Constants.PROJECT_LOGO_PATH + data.logo : null;
+        // const logoUrl = data.logo !== Constants.DEFAULT_PROJECT_LOGO ? Constants.PROJECT_LOGO_PATH + data.logo : null;
         return (
             <div className="ProjectPage-container">
                 <div className="ProjectPage-leftpanel">
-                    <p>Owner: {data.owner}</p>
+                    <p>Owner: {data.owner.username}</p>
                     <p>
                         Category <Badge color="secondary">{data.category}</Badge>
                     </p>
@@ -114,7 +114,14 @@ class ProjectPage extends Component {
                     </div>
                     <p style={{ marginTop: 16 }}>{data.description}</p>
                 </div>
-                <MemberModal open={this.state.showMembers} onClick={this.toggleMemberList} />
+                {data && 
+                <MemberModal 
+                    members={data.members}
+                    owner={data.owner.username}
+                    open={this.state.showMembers}
+                    onClick={this.toggleMemberList}
+                />
+                }
             </div>
         );
     }
