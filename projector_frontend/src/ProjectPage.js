@@ -73,7 +73,7 @@ class ProjectPage extends Component {
             // There's no slides, or the URL is malformed
         }
 
-        // const logoUrl = data.logo !== Constants.DEFAULT_PROJECT_LOGO ? Constants.PROJECT_LOGO_PATH + data.logo : null;
+        const logoUrl = data.logo !== Constants.DEFAULT_PROJECT_LOGO ? Constants.PROJECT_LOGO_PATH + data.logo : null;
         return (
             <div className="ProjectPage-container">
                 <div className="ProjectPage-leftpanel">
@@ -114,14 +114,14 @@ class ProjectPage extends Component {
                     </div>
                     <p style={{ marginTop: 16 }}>{data.description}</p>
                 </div>
-                {data && 
-                <MemberModal 
-                    members={data.members}
-                    owner={data.owner.username}
-                    open={this.state.showMembers}
-                    onClick={this.toggleMemberList}
-                />
-                }
+                {data && (
+                    <MemberModal
+                        members={data.members}
+                        owner={data.owner.username}
+                        open={this.state.showMembers}
+                        onClick={this.toggleMemberList}
+                    />
+                )}
             </div>
         );
     }
