@@ -13,7 +13,6 @@ import {
   Badge 
 } from 'reactstrap';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
-import { GoogleLogin } from 'react-google-login';
 import ProjectPage from './ProjectPage';
 import ProjectForm from './components/project-form'
 import Header from './components/Header';
@@ -28,7 +27,30 @@ class App extends Component {
         projects: null,
         user: null
       }
+      this.login = this.login.bind(this);
+      this.refreshUserToken = this.refreshUserToken.bind(this);
       this.handleSearch = this.handleSearch.bind(this);
+    }
+
+    login(user) {
+      this.setState({ user: user });
+      localStorage.setItem('Projector-User', JSON.stringify(user));
+    }
+
+    logout() {
+      localStorage.removeItem('Projector-User');
+      this.setState({ user: null });
+    }
+
+    refreshUserToken(refreshToken) {
+      fetch(Constants.OAUTH_REFRESH_URL, { 
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        method: 'POST',
+        body: JSON.stringify({ refresh: refreshToken }) 
+      })
+        .then(resp => resp.json())
+        .then(data => this.setState(oldState => { oldState.user.access_token = data.access; }))
+        .catch(err => console.log(err));
     }
 
     componentDidMount() {
@@ -36,6 +58,13 @@ class App extends Component {
         .then(response => response.json())
         .then(data => this.setState({ projects: data }))
         .catch(err => console.log(err));
+
+        const userString = localStorage.getItem('Projector-User');
+        if (userString) {
+          const user = JSON.parse(userString);
+          this.setState({ user: user });
+          this.refreshUserToken(user.refresh_token);
+        }
     }
 
     handleSearch(event) {
@@ -114,7 +143,7 @@ class App extends Component {
                   </div>
                 )} />
                 <Route exact path='/login' 
-                       render={props => <LoginPage {...props} onLogin={user => this.setState({ user: user })} />}  
+                       render={props => <LoginPage {...props} onLogin={this.login} />}  
                 />
                 <Route exact path='/projects/create' component={ProjectForm} />
                 <Route exact path='/projects/:projectId' component={ProjectPage} />

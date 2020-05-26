@@ -73,7 +73,7 @@ class ProjectPage extends Component {
             // There's no slides, or the URL is malformed
         }
 
-        const logoUrl = data.logo !== Constants.DEFAULT_PROJECT_LOGO ? Constants.PROJECT_LOGO_PATH + data.logo : null;
+        // const logoUrl = data.logo !== Constants.DEFAULT_PROJECT_LOGO ? Constants.PROJECT_LOGO_PATH + data.logo : null;
         return (
             <div className="ProjectPage-container">
                 <div className="ProjectPage-leftpanel">
