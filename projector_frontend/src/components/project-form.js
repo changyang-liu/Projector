@@ -29,7 +29,10 @@ class ProjectForm extends Component {
       const json = await res.json();
       const formFields = this.state.formFields;
       for(let key in formFields){
-        formFields[key] = json[key];
+        if(key === "owner")
+          formFields[key] = json[key].username;
+        else
+          formFields[key] = json[key];
       }
       this.setState({formFields})
     }
@@ -63,6 +66,10 @@ class ProjectForm extends Component {
   }
 
   render() {
+    if(this.props.user && this.props.user.email !== this.state.formFields.owner) {
+      return <div>You do not have permission to view this page!</div>;
+    }
+
     const canRenderCategory = ((this.props.edit && this.state.formFields.category !== "") || !this.props.edit);
 
     return(
@@ -88,6 +95,7 @@ class ProjectForm extends Component {
             placeholder='Enter owner here'
             defaultValue={this.state.formFields.owner}
             maxLength={Constants.MAX_USER_LENGTH}
+            disabled
             required
           />
 
