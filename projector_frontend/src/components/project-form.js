@@ -59,7 +59,7 @@ class ProjectForm extends Component {
       },
       body: data
     });
-    if(response.status === 201){
+    if(this.props.edit ? response.status === 200 : response.status === 201){
       const json = await response.json();
       this.props.history.push('/projects/' + json.id.toString());
       alert(this.props.edit ? "Successfully edited" : "Successfully created");
