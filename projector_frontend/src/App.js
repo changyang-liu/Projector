@@ -19,6 +19,7 @@ import ProjectForm from './components/project-form'
 import Header from './components/Header';
 import Footer from './components/Footer';
 import * as Constants from './constants';
+import LoginPage from './LoginPage';
 
 class App extends Component {
     constructor(props) {
@@ -96,19 +97,6 @@ class App extends Component {
               <Switch>
                 <Route exact={true} path='/' render={() => (
                   <div>
-                    <GoogleLogin clientId={Constants.GOOGLE_CLIENT_ID} buttonText="Login with Google" onSuccess={(resp) => {
-                      const dataToPost = { token: resp.accessToken, email: resp.Tt.Du, name: resp.Tt.Bd, profilePicture: resp.Tt.SK };
-                      fetch(Constants.SERVER_GOOGLE_OAUTH_URL, { headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, method: 'POST', body: JSON.stringify(dataToPost) }).then(resp => {
-                        return resp.text()}
-                      ).then(data => {
-                        console.log(data);
-                      }).catch(err => {
-                        console.log(err);
-                      })
-                      console.log(resp);
-                    }} onFailure={(resp) => {
-                      console.log(resp);
-                    }} cookiePolicy="single_host_origin"></GoogleLogin>
                     <div className="top">
                       <SearchBox handleSearch={this.handleSearch} disabled={!this.state.projects} />
                       <span id="new-project">
@@ -125,6 +113,9 @@ class App extends Component {
                     </Container>
                   </div>
                 )} />
+                <Route exact path='/login' 
+                       render={props => <LoginPage {...props} onLogin={user => this.setState({ user: user })} />}  
+                />
                 <Route exact path='/projects/create' component={ProjectForm} />
                 <Route exact path='/projects/:projectId' component={ProjectPage} />
                 <Route exact path='/projects/:projectId/edit'
