@@ -16,6 +16,8 @@ import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
 import ProjectPage from './ProjectPage';
 import ProjectForm from './components/project-form'
+import Header from './components/Header';
+import Footer from './components/Footer';
 import * as Constants from './constants';
 
 class App extends Component {
@@ -86,48 +88,57 @@ class App extends Component {
 
     render() {
       return (
-        <Router>
-          <Switch>
-            <Route exact={true} path='/' render={() => (
-              <div>
-                <GoogleLogin clientId={Constants.GOOGLE_CLIENT_ID} buttonText="Login with Google" onSuccess={(resp) => {
-                  const dataToPost = { token: resp.accessToken, email: resp.Tt.Du, name: resp.Tt.Bd, profilePicture: resp.Tt.SK };
-                  fetch(Constants.SERVER_GOOGLE_OAUTH_URL, { headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, method: 'POST', body: JSON.stringify(dataToPost) }).then(resp => {
-                    return resp.text()}
-                  ).then(data => {
-                    console.log(data);
-                  }).catch(err => {
-                    console.log(err);
-                  })
-                  console.log(resp);
-                }} onFailure={(resp) => {
-                  console.log(resp);
-                }} cookiePolicy="single_host_origin"></GoogleLogin>
-                <div className="top">
-                  <SearchBox handleSearch={this.handleSearch} disabled={!this.state.projects} />
-                  <span id="new-project">
-                    {this.state.projects ? 
-                      <Link to='/projects/create' className="btn btn-outline-primary">Add new project</Link> :
-                      <Link to='/projects/create' className="btn btn-outline-primary" style={{ pointerEvents: 'none' }}>Add new project</Link>
-                    }
-                  </span>
-                </div>
-                <Container className="mt-4">
-                  <Row className="justify-content-center">
-                    {this.getProjectTiles()}
-                  </Row>
-                </Container>
-              </div>
-            )} />
-            <Route exact path='/projects/create' component={ProjectForm} />
-            <Route exact path='/projects/:projectId' component={ProjectPage} />
-            <Route exact path='/projects/:projectId/edit'
-              render={() => (
-                <ProjectForm edit={true}/>
-              )}
-            />
-          </Switch>
-        </Router>
+        <div className="wrapper">
+          <Header />
+          <div className="page-body">
+            <Router>
+              <Switch>
+                <Route exact={true} path='/' render={() => (
+                  <div>
+                    <GoogleLogin clientId={Constants.GOOGLE_CLIENT_ID} buttonText="Login with Google" onSuccess={(resp) => {
+                      const dataToPost = { token: resp.accessToken, email: resp.Tt.Du, name: resp.Tt.Bd, profilePicture: resp.Tt.SK };
+                      fetch(Constants.SERVER_GOOGLE_OAUTH_URL, { headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, method: 'POST', body: JSON.stringify(dataToPost) }).then(resp => {
+                        return resp.text()}
+                      ).then(data => {
+                        console.log(data);
+                      }).catch(err => {
+                        console.log(err);
+                      })
+                      console.log(resp);
+                    }} onFailure={(resp) => {
+                      console.log(resp);
+                    }} cookiePolicy="single_host_origin"></GoogleLogin>
+                    <div className="top">
+                      <SearchBox handleSearch={this.handleSearch} disabled={!this.state.projects} />
+                      <span id="new-project">
+                        {this.state.projects ? 
+                          <Link to='/projects/create' className="btn btn-outline-primary">Add new project</Link> :
+                          <Link to='/projects/create' className="btn btn-outline-primary" style={{ pointerEvents: 'none' }}>Add new project</Link>
+                        }
+                      </span>
+                    </div>
+                    <Container className="mt-4">
+                      <Row className="justify-content-center">
+                        {this.getProjectTiles()}
+                      </Row>
+                    </Container>
+                  </div>
+                )} />
+                <Route exact path='/projects/create' component={ProjectForm} />
+                <Route exact path='/projects/:projectId' component={ProjectPage} />
+                <Route exact path='/projects/:projectId/edit'
+                  render={() => (
+                    <ProjectForm edit={true}/>
+                  )}
+                />
+              </Switch>
+            </Router>
+          </div>
+          <div className="page-footer">
+            <Footer />
+          </div>
+        </div>
+        
       );
     }
 }
