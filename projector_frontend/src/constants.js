@@ -5,6 +5,7 @@ export const MAX_USER_LENGTH = 100;
 export const MAX_PROJECT_LENGTH = 100;
 export const MAX_BLURB_LENGTH = 200;
 
+export const ACCESS_TOKEN_REFRESH_RATE = 1000 * 60 * 4.5;
 export const LOCAL_STORAGE_USER_KEY = 'Projector-User';
 export const OAUTH_REFRESH_URL = 'http://localhost:8080/api/token/refresh/';
 export const SERVER_GOOGLE_OAUTH_URL = 'http://localhost:8080/social/google-oauth2/';

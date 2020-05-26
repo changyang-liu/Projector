@@ -27,7 +27,6 @@ const LoginPage = (props) => {
                         .catch((err) => {
                             console.log(err);
                         });
-                    console.log(resp);
                 }}
                 onFailure={(resp) => {
                     console.log(resp);

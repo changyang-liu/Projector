@@ -25,16 +25,16 @@ class App extends Component {
       super(props);
       this.state = {
         projects: null,
-        user: null
+        user: null,
+        refreshTimerId: null
       }
 
       const userString = localStorage.getItem(Constants.LOCAL_STORAGE_USER_KEY);
       if (userString) {
         const user = JSON.parse(userString);
         this.state.user = user;
-        this.refreshUserToken(user.refresh_token);
       }
-
+      
       this.login = this.login.bind(this);
       this.logout = this.logout.bind(this);
       this.refreshUserToken = this.refreshUserToken.bind(this);
@@ -42,13 +42,21 @@ class App extends Component {
     }
 
     login(user) {
-      this.setState({ user: user });
+      if (this.state.refreshTimerId) {
+        clearInterval(this.state.refreshTimerId);
+      }
+
+      this.setState({ user: user, refreshTimerId: setInterval(this.refreshUserToken, Constants.ACCESS_TOKEN_REFRESH_RATE, user.refresh_token) });
       localStorage.setItem(Constants.LOCAL_STORAGE_USER_KEY, JSON.stringify(user));
     }
 
     logout() {
+      if (this.state.refreshTimerId) {
+        clearInterval(this.state.refreshTimerId);
+      }
+
       localStorage.removeItem(Constants.LOCAL_STORAGE_USER_KEY);
-      this.setState({ user: null });
+      this.setState({ user: null, refreshTimerId: null });
     }
 
     refreshUserToken(refreshToken) {
@@ -57,9 +65,19 @@ class App extends Component {
         method: 'POST',
         body: JSON.stringify({ refresh: refreshToken }) 
       })
-        .then(resp => resp.json())
+        .then(resp => { 
+          if (!resp.ok) {
+            throw Error;
+          }
+          resp.json()
+        })
         .then(data => this.setState(oldState => { oldState.user.access_token = data.access; }))
-        .catch(err => console.log(err));
+        .catch(_ => {
+          // This should mean that the refresh token has expired (or the server has crashed), so we should forcibly log out
+          // the user and reload the page to force them to log in again.
+          this.logout();
+          window.location.reload();
+        });
     }
 
     componentDidMount() {
@@ -67,6 +85,18 @@ class App extends Component {
         .then(response => response.json())
         .then(data => this.setState({ projects: data }))
         .catch(err => console.log(err));
+      
+      if (this.state.user) {
+        this.refreshUserToken(this.state.user.refresh_token);
+        this.setState({ refreshTimerId: setInterval(this.refreshUserToken, Constants.ACCESS_TOKEN_REFRESH_RATE, this.state.user.refresh_token) });
+      }
+    }
+
+    componentWillUnmount() {
+      if (this.state.refreshTimerId) {
+        clearInterval(this.state.refreshTimerId);
+        this.setState({ refreshTimerId: null });
+      }
     }
 
     handleSearch(event) {
