@@ -152,7 +152,9 @@ class App extends Component {
                     return <Redirect to="/" />;
                   }}
                 />
-                <Route exact path='/projects/create' component={ProjectForm} />
+                <Route exact path='/projects/create' 
+                       render={props => <ProjectForm {...props} user={this.state.user} />} 
+                />
                 <Route exact path='/projects/:projectId' 
                        render={props => <ProjectPage {...props} user={this.state.user} />} 
                 />

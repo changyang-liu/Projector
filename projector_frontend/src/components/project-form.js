@@ -35,6 +35,8 @@ class ProjectForm extends Component {
           formFields[key] = json[key];
       }
       this.setState({formFields})
+    }else if(this.props.user) {
+      this.setState((oldState) => oldState.formFields.owner = this.props.user.email);
     }
   }
 
@@ -53,6 +55,7 @@ class ProjectForm extends Component {
       method: method,
       headers: {
         'Accept': 'application/json',
+        'Authorization': `Bearer ${this.props.user.access_token}`
       },
       body: data
     });
@@ -66,7 +69,7 @@ class ProjectForm extends Component {
   }
 
   render() {
-    if(this.props.user && this.props.user.email !== this.state.formFields.owner) {
+    if(this.props.edit && this.props.user && this.props.user.email !== this.state.formFields.owner) {
       return <div>You do not have permission to view this page!</div>;
     }
 
@@ -92,8 +95,7 @@ class ProjectForm extends Component {
             type='text'
             name='owner'
             id='ownerfield'
-            placeholder='Enter owner here'
-            defaultValue={this.state.formFields.owner}
+            value={this.state.formFields.owner}
             maxLength={Constants.MAX_USER_LENGTH}
             disabled
             required
