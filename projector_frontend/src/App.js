@@ -27,6 +27,14 @@ class App extends Component {
         projects: null,
         user: null
       }
+
+      const userString = localStorage.getItem(Constants.LOCAL_STORAGE_USER_KEY);
+      if (userString) {
+        const user = JSON.parse(userString);
+        this.state.user = user;
+        this.refreshUserToken(user.refresh_token);
+      }
+
       this.login = this.login.bind(this);
       this.logout = this.logout.bind(this);
       this.refreshUserToken = this.refreshUserToken.bind(this);
@@ -59,13 +67,6 @@ class App extends Component {
         .then(response => response.json())
         .then(data => this.setState({ projects: data }))
         .catch(err => console.log(err));
-
-      const userString = localStorage.getItem(Constants.LOCAL_STORAGE_USER_KEY);
-      if (userString) {
-        const user = JSON.parse(userString);
-        this.setState({ user: user });
-        this.refreshUserToken(user.refresh_token);
-      }
     }
 
     handleSearch(event) {
