@@ -24,7 +24,8 @@ class App extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        projects: null
+        projects: null,
+        user: null
       }
       this.handleSearch = this.handleSearch.bind(this);
     }
@@ -89,7 +90,7 @@ class App extends Component {
     render() {
       return (
         <div className="wrapper">
-          <Header />
+          <Header user={this.state.user} />
           <div className="page-body">
             <Router>
               <Switch>
