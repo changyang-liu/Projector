@@ -174,12 +174,9 @@ class App extends Component {
 }
 
 const ProjectTile = ({ project }) => {
-  let logo = Constants.PROJECT_LOGO_PATH;
-  logo += project.logo ? project.logo : Constants.DEFAULT_PROJECT_LOGO;
-
   return (
     <Card>
-      <CardImg variant="top" src={logo} alt="Project Logo" />
+      <CardImg variant="top" src={project.logo} alt="Project Logo" />
       <CardBody>
         <CardTitle>
           {project.name}
