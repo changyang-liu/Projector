@@ -12,7 +12,7 @@ import {
   CardBody, 
   Badge 
 } from 'reactstrap';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-router-dom';
 import ProjectPage from './ProjectPage';
 import ProjectForm from './components/project-form'
 import Header from './components/Header';
@@ -28,17 +28,18 @@ class App extends Component {
         user: null
       }
       this.login = this.login.bind(this);
+      this.logout = this.logout.bind(this);
       this.refreshUserToken = this.refreshUserToken.bind(this);
       this.handleSearch = this.handleSearch.bind(this);
     }
 
     login(user) {
       this.setState({ user: user });
-      localStorage.setItem('Projector-User', JSON.stringify(user));
+      localStorage.setItem(Constants.LOCAL_STORAGE_USER_KEY, JSON.stringify(user));
     }
 
     logout() {
-      localStorage.removeItem('Projector-User');
+      localStorage.removeItem(Constants.LOCAL_STORAGE_USER_KEY);
       this.setState({ user: null });
     }
 
@@ -59,7 +60,7 @@ class App extends Component {
         .then(data => this.setState({ projects: data }))
         .catch(err => console.log(err));
 
-        const userString = localStorage.getItem('Projector-User');
+        const userString = localStorage.getItem(Constants.LOCAL_STORAGE_USER_KEY);
         if (userString) {
           const user = JSON.parse(userString);
           this.setState({ user: user });
@@ -144,6 +145,12 @@ class App extends Component {
                 )} />
                 <Route exact path='/login' 
                        render={props => <LoginPage {...props} onLogin={this.login} />}  
+                />
+                <Route exact path='/logout'
+                  render={() => {
+                    this.logout();
+                    return <Redirect to="/" />;
+                  }}
                 />
                 <Route exact path='/projects/create' component={ProjectForm} />
                 <Route exact path='/projects/:projectId' component={ProjectPage} />

@@ -38,7 +38,7 @@ const Header = (props) => {
                 <DropdownItem divider />
                 <DropdownItem>
                     <NavItem>
-                        <NavLink href="/ProjectPage/">Log Out</NavLink> {/*todo: fix linking*/}
+                        <NavLink href="/logout/">Log Out</NavLink>
                     </NavItem>
                 </DropdownItem>
             </DropdownMenu>
