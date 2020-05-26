@@ -13,9 +13,16 @@ import {
 export default class MemberModal extends Component {
   render() {
     const { members, owner, open, onClick } = this.props;
-    const memberListElements = members.map((m, i) => (
+
+    // Re-order member list alphabetically + display project owner at top
+    let sortedMembers = members.slice();
+    sortedMembers = sortedMembers.filter(member => (member.username !== owner));
+    sortedMembers.sort((a, b) => a.username.localeCompare(b.username))
+    sortedMembers.unshift(members.find(member => member.username === owner));
+
+    const memberListElements = sortedMembers.map((member, i) => (
       <ListGroupItem key={i} tag="a" href="/" action>
-        {m.username} {(m.username === owner) && <Badge pill>Owner</Badge>}
+        {member.username} {(member.username === owner) && <Badge pill>Owner</Badge>}
       </ListGroupItem>
     ));
 
