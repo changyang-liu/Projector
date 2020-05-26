@@ -81,19 +81,20 @@ class ProjectPage extends Component {
                     <p>
                         Category <Badge color="secondary">{data.category}</Badge>
                     </p>
-                    {/* TODO: Only one of these buttons should be visible at any time */}
                     {/* TODO: Join project */}
-                    <Button color="primary" onClick={() => alert('Joining Project...')}>
-                        Join {data.name}!
-                    </Button>
+                    {(this.props.user && this.props.user.email === data.owner.email) ? 
+                        (<Link
+                            style={{ marginTop: 16 }}
+                            className="btn btn-secondary"
+                            to={`/projects/${this.props.match.params.projectId}/edit`}
+                          >
+                            Edit
+                        </Link>) : 
+                        (<Button color="primary" onClick={() => alert('Joining Project...')}>
+                            Join {data.name}!
+                        </Button>)
+                    }
                     <br />
-                    <Link
-                        style={{ marginTop: 16 }}
-                        className="btn btn-secondary"
-                        to={`/projects/${this.props.match.params.projectId}/edit`}
-                    >
-                        Edit
-                    </Link>
                     <Button color="primary" onClick={this.toggleMemberList}>
                         See Who's Joined
                     </Button>

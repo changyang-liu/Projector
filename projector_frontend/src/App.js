@@ -60,12 +60,12 @@ class App extends Component {
         .then(data => this.setState({ projects: data }))
         .catch(err => console.log(err));
 
-        const userString = localStorage.getItem(Constants.LOCAL_STORAGE_USER_KEY);
-        if (userString) {
-          const user = JSON.parse(userString);
-          this.setState({ user: user });
-          this.refreshUserToken(user.refresh_token);
-        }
+      const userString = localStorage.getItem(Constants.LOCAL_STORAGE_USER_KEY);
+      if (userString) {
+        const user = JSON.parse(userString);
+        this.setState({ user: user });
+        this.refreshUserToken(user.refresh_token);
+      }
     }
 
     handleSearch(event) {
@@ -153,7 +153,9 @@ class App extends Component {
                   }}
                 />
                 <Route exact path='/projects/create' component={ProjectForm} />
-                <Route exact path='/projects/:projectId' component={ProjectPage} />
+                <Route exact path='/projects/:projectId' 
+                       render={props => <ProjectPage {...props} user={this.state.user} />} 
+                />
                 <Route exact path='/projects/:projectId/edit'
                   render={() => (
                     <ProjectForm edit={true}/>
