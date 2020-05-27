@@ -29,9 +29,14 @@ class ProjectForm extends Component {
       const json = await res.json();
       const formFields = this.state.formFields;
       for(let key in formFields){
-        formFields[key] = json[key];
+        if(key === "owner")
+          formFields[key] = json[key].username;
+        else
+          formFields[key] = json[key];
       }
       this.setState({formFields})
+    }else if(this.props.user) {
+      this.setState((oldState) => oldState.formFields.owner = this.props.user.email);
     }
   }
 
@@ -50,10 +55,11 @@ class ProjectForm extends Component {
       method: method,
       headers: {
         'Accept': 'application/json',
+        'Authorization': `Bearer ${this.props.user.access_token}`
       },
       body: data
     });
-    if(response.status === 201){
+    if(this.props.edit ? response.status === 200 : response.status === 201){
       const json = await response.json();
       this.props.history.push('/projects/' + json.id.toString());
       alert(this.props.edit ? "Successfully edited" : "Successfully created");
@@ -63,6 +69,10 @@ class ProjectForm extends Component {
   }
 
   render() {
+    if(this.props.edit && this.props.user && this.props.user.email !== this.state.formFields.owner) {
+      return <div>You do not have permission to view this page!</div>;
+    }
+
     const canRenderCategory = ((this.props.edit && this.state.formFields.category !== "") || !this.props.edit);
 
     return(
@@ -85,9 +95,9 @@ class ProjectForm extends Component {
             type='text'
             name='owner'
             id='ownerfield'
-            placeholder='Enter owner here'
-            defaultValue={this.state.formFields.owner}
+            value={this.state.formFields.owner}
             maxLength={Constants.MAX_USER_LENGTH}
+            disabled
             required
           />
 

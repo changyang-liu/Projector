@@ -121,3 +121,8 @@
   z-index: 1000;
   height: 7vh;
 }
+
+.UserPage {
+  min-height: 50vh;
+  padding-top: 10px; /*margin always pushes the footer down*/
+}

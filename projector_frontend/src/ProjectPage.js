@@ -15,6 +15,7 @@ class ProjectPage extends Component {
             showMembers: false,
         };
         this.toggleMemberList = this.toggleMemberList.bind(this);
+        this.processJoin = this.processJoin.bind(this);
     }
 
     componentDidMount() {
@@ -39,6 +40,44 @@ class ProjectPage extends Component {
         this.setState({
             showMembers: !this.state.showMembers,
         });
+    }
+
+    processJoin = async () => {
+        if(!this.props.user) {
+            alert("Please login or create an account first to join!");
+            return;
+        }
+
+        let projectMembers = this.state.project.data.members;
+
+        // TODO: get actual user information
+        let user = {
+            id: Math.random()*1000,
+            username: this.props.user.email,
+            email: this.props.user.email,
+        };
+        projectMembers.push(user);
+
+        const response = await fetch(`${Constants.PROJECT_LIST_URL}${this.props.match.params.projectId}/join`, {
+            method: 'PATCH',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.props.user.access_token}`
+            },
+            body: JSON.stringify({
+                members: projectMembers
+            })
+        });
+        if(response.status === 200) {
+            const data = await response.json();
+            alert(`Successfully joined ${this.state.project.data.name}!`);
+            await this.setState({
+                project: { failed: false, data: data }
+            })
+        } else {
+            alert("Error: failed to submit");
+        }
     }
 
     render() {
@@ -73,7 +112,7 @@ class ProjectPage extends Component {
             // There's no slides, or the URL is malformed
         }
 
-        const logoUrl = data.logo !== Constants.DEFAULT_PROJECT_LOGO ? Constants.PROJECT_LOGO_PATH + data.logo : null;
+        // const logoUrl = data.logo !== Constants.DEFAULT_PROJECT_LOGO ? Constants.PROJECT_LOGO_PATH + data.logo : null;
         return (
             <div className="ProjectPage-container">
                 <div className="ProjectPage-leftpanel">
@@ -81,19 +120,19 @@ class ProjectPage extends Component {
                     <p>
                         Category <Badge color="secondary">{data.category}</Badge>
                     </p>
-                    {/* TODO: Only one of these buttons should be visible at any time */}
-                    {/* TODO: Join project */}
-                    <Button color="primary" onClick={() => alert('Joining Project...')}>
-                        Join {data.name}!
-                    </Button>
+                    {(this.props.user && this.props.user.email === data.owner.email) ? 
+                        (<Link
+                            style={{ marginTop: 16 }}
+                            className="btn btn-secondary"
+                            to={`/projects/${this.props.match.params.projectId}/edit`}
+                          >
+                            Edit
+                        </Link>) : 
+                        (<Button color="primary" onClick={this.processJoin}>
+                            Join {data.name}!
+                        </Button>)
+                    }
                     <br />
-                    <Link
-                        style={{ marginTop: 16 }}
-                        className="btn btn-secondary"
-                        to={`/projects/${this.props.match.params.projectId}/edit`}
-                    >
-                        Edit
-                    </Link>
                     <Button color="primary" onClick={this.toggleMemberList}>
                         See Who's Joined
                     </Button>
