@@ -3,5 +3,6 @@ from userprofile import views
 
 urlpatterns = [
    path('', views.UserList.as_view()),
-   path('<int:pk>', views.UserDetail.as_view())
+   path('<int:pk>', views.UserDetail.as_view()),
+   path('<int:pk>/profile', views.UserProfileUpdate.as_view())
 ]
