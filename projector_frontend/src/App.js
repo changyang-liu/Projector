@@ -1,4 +1,3 @@
-//import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
@@ -69,9 +68,11 @@ class App extends Component {
           if (!resp.ok) {
             throw Error;
           }
-          resp.json()
+          return resp.json();
         })
-        .then(data => this.setState(oldState => { oldState.user.access_token = data.access; }))
+        .then(data => {
+          this.setState(oldState => { oldState.user.access_token = data.access; })
+        })
         .catch(_ => {
           // This should mean that the refresh token has expired (or the server has crashed), so we should forcibly log out
           // the user and reload the page to force them to log in again.
