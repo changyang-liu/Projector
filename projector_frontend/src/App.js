@@ -1,15 +1,15 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
-import { 
-  Container, 
-  Row, 
-  Col, 
-  Card, 
-  CardImg, 
-  CardTitle, 
-  CardBody, 
-  Badge 
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  CardImg,
+  CardTitle,
+  CardBody,
+  Badge
 } from 'reactstrap';
 import { BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-router-dom';
 import ProjectPage from './ProjectPage';
@@ -18,6 +18,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import * as Constants from './constants';
 import LoginPage from './LoginPage';
+import UserPage from './UserPage';
 
 class App extends Component {
     constructor(props) {
@@ -33,7 +34,7 @@ class App extends Component {
         const user = JSON.parse(userString);
         this.state.user = user;
       }
-      
+
       this.login = this.login.bind(this);
       this.logout = this.logout.bind(this);
       this.refreshUserToken = this.refreshUserToken.bind(this);
@@ -59,12 +60,12 @@ class App extends Component {
     }
 
     refreshUserToken(refreshToken) {
-      fetch(Constants.OAUTH_REFRESH_URL, { 
+      fetch(Constants.OAUTH_REFRESH_URL, {
         headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
         method: 'POST',
-        body: JSON.stringify({ refresh: refreshToken }) 
+        body: JSON.stringify({ refresh: refreshToken })
       })
-        .then(resp => { 
+        .then(resp => {
           if (!resp.ok) {
             throw Error;
           }
@@ -86,7 +87,7 @@ class App extends Component {
         .then(response => response.json())
         .then(data => this.setState({ projects: data }))
         .catch(err => console.log(err));
-      
+
       if (this.state.user) {
         this.refreshUserToken(this.state.user.refresh_token);
         this.setState({ refreshTimerId: setInterval(this.refreshUserToken, Constants.ACCESS_TOKEN_REFRESH_RATE, this.state.user.refresh_token) });
@@ -162,7 +163,7 @@ class App extends Component {
                     <div className="top">
                       <SearchBox handleSearch={this.handleSearch} disabled={!this.state.projects} />
                       <span id="new-project">
-                        {this.state.projects ? 
+                        {this.state.projects ?
                           <Link to='/projects/create' className="btn btn-outline-primary">Add new project</Link> :
                           <Link to='/projects/create' className="btn btn-outline-primary" style={{ pointerEvents: 'none' }}>Add new project</Link>
                         }
@@ -175,8 +176,8 @@ class App extends Component {
                     </Container>
                   </div>
                 )} />
-                <Route exact path='/login' 
-                       render={props => <LoginPage {...props} onLogin={this.login} />}  
+                <Route exact path='/login'
+                       render={props => <LoginPage {...props} onLogin={this.login} />}
                 />
                 <Route exact path='/logout'
                   render={() => {
@@ -184,14 +185,17 @@ class App extends Component {
                     return <Redirect to="/" />;
                   }}
                 />
-                <Route exact path='/projects/create' 
-                       render={props => <ProjectForm {...props} user={this.state.user} />} 
+                <Route exact path='/projects/create'
+                       render={props => <ProjectForm {...props} user={this.state.user} />}
                 />
-                <Route exact path='/projects/:projectId' 
-                       render={props => <ProjectPage {...props} user={this.state.user} />} 
+                <Route exact path='/projects/:projectId'
+                       render={props => <ProjectPage {...props} user={this.state.user} />}
                 />
                 <Route exact path='/projects/:projectId/edit'
                        render={props => <ProjectForm {...props} user={this.state.user} edit={true}/>}
+                />
+                <Route exact path='/User'
+                       render={props => <UserPage {...props} user={this.state.user} />}
                 />
               </Switch>
             </Router>
@@ -200,7 +204,7 @@ class App extends Component {
             <Footer />
           </div>
         </div>
-        
+
       );
     }
 }
@@ -225,7 +229,7 @@ const ProjectTile = ({ project }) => {
 
 const SearchBox = ({ handleSearch, disabled }) => (
   <span>
-    <input 
+    <input
       type="text"
       placeholder="Search for projects"
       onChange={handleSearch}

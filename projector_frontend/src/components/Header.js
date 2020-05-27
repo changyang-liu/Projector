@@ -26,7 +26,7 @@ const Header = (props) => {
             <DropdownMenu right>
                 <DropdownItem>
                     <NavItem>
-                        <NavLink href="/ProjectPage/">My Profile</NavLink> {/*todo: fix linking*/}
+                        <NavLink href="/User">My Profile</NavLink> {/*todo: fix linking*/}
                     </NavItem>
                 </DropdownItem>
                 <DropdownItem>
