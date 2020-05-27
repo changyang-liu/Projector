@@ -16,11 +16,9 @@ export default class MemberModal extends Component {
 
     // Re-order member list alphabetically + display project owner at top
     let sortedMembers = members.slice();
-    if (sortedMembers.length !== 0) {
-      sortedMembers = sortedMembers.filter(member => (member.username !== owner));
-      sortedMembers.sort((a, b) => a.username.localeCompare(b.username))
-      sortedMembers.unshift(members.find(member => member.username === owner));
-    }
+    sortedMembers = sortedMembers.filter(member => (member.username !== owner));
+    sortedMembers.sort((a, b) => a.username.localeCompare(b.username))
+    sortedMembers.unshift({ username: owner });
 
     const memberListElements = sortedMembers.map((member, i) => (
       <ListGroupItem key={i} tag="a" href="/" action>
