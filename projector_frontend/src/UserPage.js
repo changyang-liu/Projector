@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container } from 'reactstrap';
+import {
+    Container, Card, CardImg, CardText, CardBody,
+    CardTitle, CardSubtitle, Button
+} from 'reactstrap';
 
 function Image(props){
     return (
@@ -38,14 +41,14 @@ class UserPage extends Component {
 
     render() {
         return (
-            <Container className="mt-4">
-                <Container className="mx-auto">
-                    <Image props={this.state.image}/>
-                </Container>
-                <Container className="mt-lg-4">
-                    <Profile person={this.state.person}/>
-                </Container>
-            </Container>
+            <div className="UserPage">
+                <Card style={{width:"80%", height:"80%"}} className="mx-auto my-auto">
+                    <CardImg top width="100%" src={this.state.image} alt="Profile Picture" />
+                    <CardBody>
+                        <CardText><Profile person={this.state.person}/></CardText>
+                    </CardBody>
+                </Card>
+            </div>
         );
     }
 }
