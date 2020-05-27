@@ -10,7 +10,7 @@ class Project(models.Model):
     name = models.CharField(max_length=100)
     created_at = models.DateTimeField('Created At', auto_now_add=True)
     last_modified = models.DateTimeField('Last Modified', auto_now=True)
-    owner = models.ForeignKey(User, related_name='owned_projects', on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, related_name='owned_projects', null=True, on_delete=models.SET_NULL)
     members = models.ManyToManyField(User, related_name='member_of_projects', blank=True)
 
     #Choice fields
