@@ -8,6 +8,7 @@ from projects.models import Project
 from projects.serializers import ProjectSerializer
 from projects.permissions import IsOwnerOrReadOnly
 
+from django.contrib.auth.models import User
 
 class BaseProjectView(generics.ListCreateAPIView):
     """
@@ -30,3 +31,20 @@ class DetailedProjectView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsOwnerOrReadOnly]
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+
+class JoinProjectView(generics.UpdateAPIView):
+    """
+    Update a particular project's member list (PATCH)
+    """
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+
+    def update(self, request, *args, **kwargs):
+        project = self.get_object()
+        project.members.clear()
+        for member in request.data['members']:
+            user = User.objects.get(email__exact=member['email'])
+            #TODO: Have to relate user to project?
+            project.members.add(user)
+        return super().update(request, *args, **kwargs)

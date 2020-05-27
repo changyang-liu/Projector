@@ -7,6 +7,7 @@
 - __Retrieve single:__ GET '/projects/:id'
 - __Update single:__ PUT 'projects/:id' (Owner only)
 - __Delete single:__ DELETE 'projects/:id' (Owner only)
+- __Update members:__ PUT 'projects/:id/join' (Authenticated only)
 
 ## Users
 
