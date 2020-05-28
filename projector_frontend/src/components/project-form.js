@@ -110,11 +110,11 @@ class ProjectForm extends Component {
             defaultValue={this.state.formFields.category}
             required
           >
-            <option value='GEN'>General</option>
-            <option value='TEC'>Technology</option>
-            <option value='SVC'>Service</option>
-            <option value='MED'>Media</option>
-            <option value='GAM'>Games</option>
+            {Object.keys(Constants.CATEGORIES).map(e => 
+              <option value={e}>
+                {Constants.CATEGORIES[e]}
+              </option>
+            )}
           </Input>
           }
 

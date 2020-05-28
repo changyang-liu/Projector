@@ -16,3 +16,12 @@ export const GOOGLE_CLIENT_ID = '701132387789-6s24lbf37aidsjmpqn04m1vfivpdp9rl.a
 export const JOIN_REQUEST_CODE = "Join Request";
 export const CANCEL_JOIN_CODE = "Cancel Request";
 export const ACCEPT_JOIN_CODE = "Accept";
+
+// Project category codes
+export const CATEGORIES = {
+  "GEN": "General",
+  "TEC": "Technology",
+  "SVC": "Service",
+  "MED": "Media",
+  "GAM": "Games"
+};
