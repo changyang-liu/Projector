@@ -48,6 +48,7 @@ class GoogleAuthView(APIView):
 
         refresh_token = RefreshToken.for_user(user)  # generate token without username & password
         response = {
+            "id": user.id,
             "email": user.email,
             "access_token": str(refresh_token.access_token),
             "refresh_token": str(refresh_token)
