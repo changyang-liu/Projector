@@ -156,7 +156,7 @@ class ProjectPage extends Component {
                 {data && (
                     <MemberModal
                         members={data.members}
-                        owner={data.owner.username}
+                        owner={data.owner}
                         open={this.state.showMembers}
                         onClick={this.toggleMemberList}
                     />
