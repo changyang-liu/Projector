@@ -1,7 +1,6 @@
 .top {
   display: flex;
   justify-content: space-between;
-  overflow: hidden;
 }
 
 .title {
@@ -26,6 +25,7 @@
 
 #new-project {
   margin: 1em;
+  white-space: nowrap;
   justify-content: center;
 }
 
@@ -125,6 +125,10 @@
 .navbar {
   z-index: 1000;
   height: 7vh;
+}
+
+.navbar-toggler {
+  margin-top: 0;
 }
 
 .UserPage {
