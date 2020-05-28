@@ -9,7 +9,12 @@ import {
   CardImg,
   CardTitle,
   CardBody,
-  Badge
+  Badge,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown,
+  InputGroup
 } from 'reactstrap';
 import { BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-router-dom';
 import ProjectPage from './ProjectPage';
@@ -39,6 +44,7 @@ class App extends Component {
       this.logout = this.logout.bind(this);
       this.refreshUserToken = this.refreshUserToken.bind(this);
       this.handleSearch = this.handleSearch.bind(this);
+      this.filterByCategory = this.filterByCategory.bind(this);
     }
 
     login(user) {
@@ -130,6 +136,25 @@ class App extends Component {
       });
     }
 
+    filterByCategory(category) {
+      const { projects } = this.state;
+      let filtered = [];
+
+      if (projects) {
+        if (category === "ALL")
+          filtered = projects;
+        else {
+          filtered = projects.filter((project) => {
+            return project.category === category;
+          });
+        }
+      }
+
+      this.setState({
+        filtered: filtered
+      });
+    }
+
     getProjectTiles() {
       const { projects, filtered } = this.state;
       const toUse = filtered ? filtered : projects;
@@ -161,7 +186,10 @@ class App extends Component {
                 <Route exact={true} path='/' render={() => (
                   <div>
                     <div className="top">
-                      <SearchBox handleSearch={this.handleSearch} disabled={!this.state.projects} />
+                      <InputGroup style={{"margin-left": "1em"}}>
+                        <CategoryDropdown filterByCategory={this.filterByCategory} disabled={!this.state.projects} />
+                        <SearchBox handleSearch={this.handleSearch} disabled={!this.state.projects} />
+                      </InputGroup>
                       <span id="new-project">
                         {this.state.projects ?
                           <Link to='/projects/create' className="btn btn-outline-primary">Add new project</Link> :
@@ -237,6 +265,24 @@ const SearchBox = ({ handleSearch, disabled }) => (
       disabled={disabled}
     />
   </span>
+);
+
+const CategoryDropdown = ({ filterByCategory, disabled }) => (
+  <UncontrolledDropdown> 
+    <DropdownToggle caret>
+      Categories
+    </DropdownToggle>
+    <DropdownMenu>
+      <DropdownItem key={0} onClick={() => filterByCategory("ALL")} disabled={disabled}>
+        All
+      </DropdownItem>
+      {Object.keys(Constants.CATEGORIES).map((categoryCode, index) => 
+        <DropdownItem key={index+1} onClick={() => filterByCategory(categoryCode)} disabled={disabled}>
+          {Constants.CATEGORIES[categoryCode]}
+        </DropdownItem>
+      )}
+    </DropdownMenu>
+  </UncontrolledDropdown> 
 );
 
 export default App;
