@@ -23,7 +23,8 @@ export default class MemberModal extends Component {
       denyOnClick
     } = this.props;
 
-    // Re-order member list alphabetically + display project owner at top
+    // Create member list with project owner at top, join request list, then member list.
+    // Join request list and member list are individually alphabetically sorted.
     let sortedMembers = members.slice();
     sortedMembers.sort((a, b) => a.username.localeCompare(b.username));
 
@@ -52,6 +53,8 @@ export default class MemberModal extends Component {
                   username: request.username, 
                   email: request.email 
                 });
+
+                // This stops the list group item link from firing on button click
                 event.preventDefault();
                 event.stopPropagation();
               }}
@@ -68,6 +71,8 @@ export default class MemberModal extends Component {
                   username: request.username, 
                   email: request.email 
                 });
+
+                // This stops the list group item link from firing on button click
                 event.preventDefault();
                 event.stopPropagation();
               }} 
@@ -77,7 +82,7 @@ export default class MemberModal extends Component {
             >
               Deny
             </Button>
-            </span>
+          </span>
         </ListGroupItem>
       )));
     }

@@ -112,6 +112,7 @@ class ProjectPage extends Component {
                         Category <Badge color="secondary">{data.category}</Badge>
                     </p>
                     {(this.props.user && this.props.user.email === data.owner.email) ? 
+                        // Show the edit button for the project owner
                         (<Link
                               style={{ marginTop: 16 }}
                               className="btn btn-secondary"
@@ -121,6 +122,7 @@ class ProjectPage extends Component {
                         </Link>) : 
                     ((this.props.user && !data.members.find(member => member.id === this.props.user.id) &&
                       !data.join_requests.find(request => request.id === this.props.user.id)) ?
+                        // Show the join button if the user is not a member nor in the join request list
                         (<Button 
                               color="primary" 
                               onClick={() => this.processJoinOrAccept(Constants.JOIN_REQUEST_CODE, {
@@ -132,6 +134,7 @@ class ProjectPage extends Component {
                             Join {data.name}!
                         </Button>) :
                     (this.props.user &&
+                        // Show the cancel join button if the user is in the join request list
                         (<Button 
                               color="primary" 
                               onClick={() => this.processJoinOrAccept(Constants.CANCEL_JOIN_CODE, {
