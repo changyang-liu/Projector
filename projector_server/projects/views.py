@@ -44,7 +44,7 @@ class JoinProjectView(generics.UpdateAPIView):
         project = self.get_object()
         project.members.clear()
         for member in request.data['members']:
-            user = User.objects.get(email__exact=member['email'])
+            user = User.objects.get(id__exact=member['id'])
             #TODO: Have to relate user to project?
             project.members.add(user)
         return super().update(request, *args, **kwargs)
