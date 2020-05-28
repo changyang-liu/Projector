@@ -13,6 +13,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     from userprofile.serializers import SimpleUserSerializer  # To prevent circular import
     owner = SimpleUserSerializer(read_only=True)
     members = SimpleUserSerializer(many=True, read_only=True)
+    join_requests = SimpleUserSerializer(many=True, read_only=True)
     class Meta:
         model = Project
         fields = "__all__"

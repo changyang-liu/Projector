@@ -3,6 +3,7 @@ from django.http import HttpResponse, JsonResponse, Http404
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework import generics
+from rest_framework.response import Response
 
 from projects.models import Project
 from projects.serializers import ProjectSerializer
@@ -34,7 +35,7 @@ class DetailedProjectView(generics.RetrieveUpdateDestroyAPIView):
 
 class JoinProjectView(generics.UpdateAPIView):
     """
-    Update a particular project's member list (PATCH)
+    Update a particular project's join request list or member list (PATCH)
     """
     permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Project.objects.all()
@@ -42,12 +43,24 @@ class JoinProjectView(generics.UpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         project = self.get_object()
-        member = request.data['user']
-        userObject = User.objects.get(id__exact=member['id'])
+        user = request.data['user']
+        updateType = request.data['type']
+        userObject = User.objects.get(id__exact=user['id'])
 
-        # Only add user to member list if not already in it
-        if not userObject in project.members.all():
-          #TODO: Have to relate user to project?
-          project.members.add(userObject)
-        
+        if updateType == "Join Request":
+            # Only add user to join request list if not already in it
+            if not userObject in project.join_requests.all():
+                project.join_requests.add(userObject)
+        elif updateType == "Cancel Request":
+            # Only remove user from join request list if already in it
+            if userObject in project.join_requests.all():
+                project.join_requests.remove(userObject)
+        elif updateType == "Accept":
+            #TODO: Have to relate user to project?
+            project.join_requests.remove(userObject)
+            project.members.add(userObject)
+        else:
+            content = {"error": "Invalid update type"}
+            return Response(content, status=400)
+
         return super().update(request, *args, **kwargs)

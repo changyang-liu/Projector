@@ -15,7 +15,7 @@ class ProjectPage extends Component {
             showMembers: false,
         };
         this.toggleMemberList = this.toggleMemberList.bind(this);
-        this.processJoin = this.processJoin.bind(this);
+        this.processJoinOrAccept = this.processJoinOrAccept.bind(this);
     }
 
     componentDidMount() {
@@ -42,12 +42,12 @@ class ProjectPage extends Component {
         });
     }
 
-    processJoin = async () => {
+    processJoinOrAccept = async (type, userInfo) => {
         if(!this.props.user) {
             alert("Please login or create an account first to join!");
             return;
         }
-
+        
         const response = await fetch(`${Constants.PROJECT_LIST_URL}${this.props.match.params.projectId}/join`, {
             method: 'PATCH',
             headers: {
@@ -56,11 +56,8 @@ class ProjectPage extends Component {
                 'Authorization': `Bearer ${this.props.user.access_token}`
             },
             body: JSON.stringify({
-                user: {
-                  id: this.props.user.id,
-                  username: this.props.user.email,
-                  email: this.props.user.email,
-                }
+                user: userInfo,
+                type: type
             })
         });
         if(response.status === 200) {
@@ -122,11 +119,30 @@ class ProjectPage extends Component {
                           >
                             Edit
                         </Link>) : 
-                    (this.props.user && !data.members.find(member => member.email === this.props.user.email) &&
-                        (<Button color="primary" onClick={this.processJoin}>
+                    ((this.props.user && !data.members.find(member => member.id === this.props.user.id) &&
+                      !data.join_requests.find(request => request.id === this.props.user.id)) ?
+                        (<Button 
+                              color="primary" 
+                              onClick={() => this.processJoinOrAccept(Constants.JOIN_REQUEST_CODE, {
+                                  id: this.props.user.id,
+                                  username: this.props.user.email,
+                                  email: this.props.user.email,
+                              }
+                          )}>
                             Join {data.name}!
-                        </Button>))
-                    }
+                        </Button>) :
+                    (this.props.user &&
+                        (<Button 
+                              color="primary" 
+                              onClick={() => this.processJoinOrAccept(Constants.CANCEL_JOIN_CODE, {
+                                  id: this.props.user.id,
+                                  username: this.props.user.email,
+                                  email: this.props.user.email,
+                              }
+                          )}>
+                            Cancel Join
+                        </Button>)
+                    ))}
                     <br />
                     <Button color="primary" onClick={this.toggleMemberList}>
                         See Who's Joined
@@ -151,9 +167,17 @@ class ProjectPage extends Component {
                 {data && (
                     <MemberModal
                         members={data.members}
+                        joinRequests={data.join_requests}
                         owner={data.owner}
+                        user={this.props.user}
                         open={this.state.showMembers}
-                        onClick={this.toggleMemberList}
+                        closeOnClick={this.toggleMemberList}
+                        acceptOnClick={(userInfo) => 
+                            this.processJoinOrAccept(Constants.ACCEPT_JOIN_CODE, userInfo)
+                        }
+                        denyOnClick={(userInfo) => 
+                            this.processJoinOrAccept(Constants.CANCEL_JOIN_CODE, userInfo)
+                        }
                     />
                 )}
             </div>

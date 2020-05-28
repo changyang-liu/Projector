@@ -12,6 +12,7 @@ class Project(models.Model):
     last_modified = models.DateTimeField('Last Modified', auto_now=True)
     owner = models.ForeignKey(User, related_name='owned_projects', null=True, on_delete=models.SET_NULL)
     members = models.ManyToManyField(User, related_name='member_of', blank=True)
+    join_requests = models.ManyToManyField(User, related_name='requesting_join_to', blank=True)
 
     #Choice fields
     class ProjectCategory(models.TextChoices):
