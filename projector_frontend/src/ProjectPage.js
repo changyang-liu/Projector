@@ -62,7 +62,6 @@ class ProjectPage extends Component {
         });
         if(response.status === 200) {
             const data = await response.json();
-            alert(`Successfully joined ${this.state.project.data.name}!`);
             await this.setState({
                 project: { failed: false, data: data }
             })
