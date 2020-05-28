@@ -127,9 +127,10 @@ class ProjectPage extends Component {
                           >
                             Edit
                         </Link>) : 
-                        (!data.members.find(member => member.email === this.props.user.email) && <Button color="primary" onClick={this.processJoin}>
+                      (this.props.user && !data.members.find(member => member.email === this.props.user.email) &&
+                        (<Button color="primary" onClick={this.processJoin}>
                             Join {data.name}!
-                        </Button>)
+                        </Button>))
                     }
                     <br />
                     <Button color="primary" onClick={this.toggleMemberList}>
