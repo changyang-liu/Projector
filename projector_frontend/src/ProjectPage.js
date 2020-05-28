@@ -48,13 +48,6 @@ class ProjectPage extends Component {
             return;
         }
 
-        let projectMembers = this.state.project.data.members;
-        projectMembers.push({
-            id: this.props.user.id,
-            username: this.props.user.email,
-            email: this.props.user.email,
-        });
-
         const response = await fetch(`${Constants.PROJECT_LIST_URL}${this.props.match.params.projectId}/join`, {
             method: 'PATCH',
             headers: {
@@ -63,7 +56,11 @@ class ProjectPage extends Component {
                 'Authorization': `Bearer ${this.props.user.access_token}`
             },
             body: JSON.stringify({
-                members: projectMembers
+                user: {
+                  id: this.props.user.id,
+                  username: this.props.user.email,
+                  email: this.props.user.email,
+                }
             })
         });
         if(response.status === 200) {

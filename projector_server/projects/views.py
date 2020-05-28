@@ -42,9 +42,12 @@ class JoinProjectView(generics.UpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         project = self.get_object()
-        project.members.clear()
-        for member in request.data['members']:
-            user = User.objects.get(id__exact=member['id'])
-            #TODO: Have to relate user to project?
-            project.members.add(user)
+        member = request.data['user']
+        userObject = User.objects.get(id__exact=member['id'])
+
+        # Only add user to member list if not already in it
+        if not userObject in project.members.all():
+          #TODO: Have to relate user to project?
+          project.members.add(userObject)
+        
         return super().update(request, *args, **kwargs)
