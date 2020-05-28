@@ -49,13 +49,11 @@ class ProjectPage extends Component {
         }
 
         let projectMembers = this.state.project.data.members;
-
-        let user = {
+        projectMembers.push({
             id: this.props.user.id,
             username: this.props.user.email,
             email: this.props.user.email,
-        };
-        projectMembers.push(user);
+        });
 
         const response = await fetch(`${Constants.PROJECT_LIST_URL}${this.props.match.params.projectId}/join`, {
             method: 'PATCH',
@@ -75,7 +73,7 @@ class ProjectPage extends Component {
                 project: { failed: false, data: data }
             })
         } else {
-            alert("Error: failed to submit");
+            alert("Sorry, an error has occured in your request. Please try again later.");
         }
     }
 
@@ -121,13 +119,13 @@ class ProjectPage extends Component {
                     </p>
                     {(this.props.user && this.props.user.email === data.owner.email) ? 
                         (<Link
-                            style={{ marginTop: 16 }}
-                            className="btn btn-secondary"
-                            to={`/projects/${this.props.match.params.projectId}/edit`}
+                              style={{ marginTop: 16 }}
+                              className="btn btn-secondary"
+                              to={`/projects/${this.props.match.params.projectId}/edit`}
                           >
                             Edit
                         </Link>) : 
-                      (this.props.user && !data.members.find(member => member.email === this.props.user.email) &&
+                    (this.props.user && !data.members.find(member => member.email === this.props.user.email) &&
                         (<Button color="primary" onClick={this.processJoin}>
                             Join {data.name}!
                         </Button>))
