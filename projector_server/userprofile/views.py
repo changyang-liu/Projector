@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.http import Http404
+from django.core.exceptions import PermissionDenied
 
 from rest_framework import generics
 from rest_framework import status
@@ -33,13 +34,11 @@ class UserProfileUpdate(APIView):
             user = User.objects.get(pk=pk)
         except User.DoesNotExist:
             raise Http404
-
-        if self.check_object_permissions(self.request, user):
-            return user
+        self.check_object_permissions(self.request, user)
+        return user
 
     def put(self, request, pk, format=None):
         user = self.get_user(pk)
-
         serializer = UserProfileSerializer(user.profile, data=request.data)
         if serializer.is_valid():
             serializer.save()
