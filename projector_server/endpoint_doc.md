@@ -13,6 +13,7 @@
 
 - __List:__ GET '/users/'
 - __Retrieve single:__ GET '/users/:id'
+- __Update profile:__ PUT 'users/:id/profile' (Is User only)
 
 ## Google oauth
 
