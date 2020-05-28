@@ -39,7 +39,7 @@ export default class MemberModal extends Component {
     ];
 
     // Show join requests next, but only if the viewer is the owner
-    if(user.id === owner.id) {
+    if(user && user.id === owner.id) {
       memberListElements = memberListElements.concat(sortedJoinRequests.map((request, i) => (
         <ListGroupItem key={i+1} tag="a" href="/" action>
           <span style={{"verticalAlign": "middle"}}>
