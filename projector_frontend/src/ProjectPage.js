@@ -50,9 +50,8 @@ class ProjectPage extends Component {
 
         let projectMembers = this.state.project.data.members;
 
-        // TODO: get actual user information
         let user = {
-            id: Math.random()*1000,
+            id: this.props.user.id,
             username: this.props.user.email,
             email: this.props.user.email,
         };
