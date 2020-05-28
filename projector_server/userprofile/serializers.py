@@ -21,7 +21,8 @@ class SimpleUserSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     from projects.serializers import SimpleProjectSerializer  # To prevent circular import
     owned_projects = SimpleProjectSerializer(many=True, read_only=True)
+    member_of = SimpleProjectSerializer(many=True, read_only=True)
     profile = UserProfileSerializer(read_only=True)
     class Meta:
         model = User
-        fields = ("id", "username", "email", "first_name", "last_name", "owned_projects", "profile")
+        fields = ("id", "username", "email", "first_name", "last_name", "owned_projects",  "member_of", "profile")
