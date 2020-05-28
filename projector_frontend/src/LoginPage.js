@@ -22,7 +22,8 @@ const LoginPage = (props) => {
                             props.onLogin(data);
 
                             // Redirect to / - ideally, this component would recieve a url to redirect to after a successful login.
-                            props.history.push('/');
+                            const redirectURL = props.location.state?.redirectURL;
+                            props.history.push(redirectURL || '/');
                         })
                         .catch((err) => {
                             console.log(err);

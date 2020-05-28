@@ -3,7 +3,7 @@ import '../form.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import * as Constants from '../constants';
 
 class ProjectForm extends Component {
@@ -69,6 +69,10 @@ class ProjectForm extends Component {
   }
 
   render() {
+    if (!this.props.user) {
+      return <Redirect to={{ pathname: '/login', state: { redirectURL: this.props.location } }} />
+    }
+
     if(this.props.edit && this.props.user && this.props.user.email !== this.state.formFields.owner) {
       return <div>You do not have permission to view this page!</div>;
     }
