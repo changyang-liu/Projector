@@ -245,8 +245,10 @@ const ProjectTile = ({ project }) => {
         <CardTitle>
           {project.name}
           <div>
-            {/* Neaten the badge layout */}
-            <Badge color="secondary">{project.category}</Badge>
+            {console.log(Constants.CATEGORIES[project.category].color)}
+            <Badge color={`${Constants.CATEGORIES[project.category].color}`}>
+              {Constants.CATEGORIES[project.category].expanded}
+            </Badge>
           </div>
         </CardTitle>
         <a href={`/projects/${project.id}`} className="stretched-link">{project.blurb}</a>
@@ -278,7 +280,7 @@ const CategoryDropdown = ({ filterByCategory, disabled }) => (
       </DropdownItem>
       {Object.keys(Constants.CATEGORIES).map((categoryCode, index) => 
         <DropdownItem key={index+1} onClick={() => filterByCategory(categoryCode)} disabled={disabled}>
-          {Constants.CATEGORIES[categoryCode]}
+          {Constants.CATEGORIES[categoryCode].expanded}
         </DropdownItem>
       )}
     </DropdownMenu>

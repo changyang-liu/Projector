@@ -19,9 +19,24 @@ export const ACCEPT_JOIN_CODE = "Accept";
 
 // Project category codes
 export const CATEGORIES = {
-  "GEN": "General",
-  "TEC": "Technology",
-  "SVC": "Service",
-  "MED": "Media",
-  "GAM": "Games"
+  "GEN": {
+    expanded: "General",
+    color: "secondary"
+  },
+  "TEC": {
+    expanded: "Technology",
+    color: "info"
+  },
+  "SVC": {
+    expanded: "Service",
+    color: "danger"
+  },
+  "MED": {
+    expanded: "Media",
+    color: "warning"
+  },
+  "GAM": {
+    expanded: "Games",
+    color: "success"
+  }
 };

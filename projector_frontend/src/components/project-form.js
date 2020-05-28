@@ -116,7 +116,7 @@ class ProjectForm extends Component {
           >
             {Object.keys(Constants.CATEGORIES).map(e => 
               <option value={e}>
-                {Constants.CATEGORIES[e]}
+                {Constants.CATEGORIES[e].expanded}
               </option>
             )}
           </Input>
