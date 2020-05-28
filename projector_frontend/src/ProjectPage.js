@@ -102,13 +102,16 @@ class ProjectPage extends Component {
             // There's no slides, or the URL is malformed
         }
 
-        // const logoUrl = data.logo !== Constants.DEFAULT_PROJECT_LOGO ? Constants.PROJECT_LOGO_PATH + data.logo : null;
         return (
             <div className="ProjectPage-container">
                 <div className="ProjectPage-leftpanel">
-                    <p>Owner: {data.owner.username}</p>
+                    <img className="card-img" src={data.logo} />
+                    <p style={{ marginTop: 16 }}>Owner: {data.owner.username}</p>
                     <p>
                         Category <Badge color="secondary">{data.category}</Badge>
+                    </p>
+                    <p>
+                        Status <Badge color="secondary">{data.status}</Badge>
                     </p>
                     {(this.props.user && this.props.user.email === data.owner.email) ? 
                         // Show the edit button for the project owner
@@ -154,6 +157,8 @@ class ProjectPage extends Component {
                     <div className="ProjectPage-header-container">
                         <h1 className="ProjectPage-title">{data.name}</h1>
                     </div>
+                    <h5 style={{ marginTop: 16 }}>{data.blurb}</h5>
+                    <hr/>
                     <div className="ProjectPage-media-container">
                         {videoId && (
                             <YouTube videoId={videoId} containerClassName="ProjectPage-youtube-container" className="ProjectPage-youtube" />
@@ -164,7 +169,7 @@ class ProjectPage extends Component {
                             </div>
                         )}
                     </div>
-                    <p style={{ marginTop: 16 }}>{data.description}</p>
+                    <p>{data.description}</p>
                 </div>
                 {data && (
                     <MemberModal
