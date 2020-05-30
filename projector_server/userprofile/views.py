@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.http import Http404
-from django.core.exceptions import PermissionDenied
 
 from rest_framework import generics
 from rest_framework import status
