@@ -24,6 +24,7 @@ import Footer from './components/Footer';
 import * as Constants from './constants';
 import LoginPage from './LoginPage';
 import UserPage from './UserPage';
+import UserForm from './components/user-form'
 
 class App extends Component {
     constructor(props) {
@@ -222,8 +223,11 @@ class App extends Component {
                 <Route exact path='/projects/:projectId/edit'
                        render={props => <ProjectForm {...props} user={this.state.user} edit={true}/>}
                 />
-                <Route exact path='/User'
+                <Route exact path='/profile'
                        render={props => <UserPage {...props} user={this.state.user} />}
+                />
+                <Route exact path='/profile/edit'
+                       render={props => <UserForm {...props} user={this.state.user}/>}
                 />
               </Switch>
             </Router>
