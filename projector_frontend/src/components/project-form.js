@@ -121,17 +121,18 @@ class ProjectForm extends Component {
             )}
           </Input>
           }
-
-          <h3 id='header2'>More info</h3>
-
-          <Label for='blurbfield'>Blurb</Label>
+          
+          <Label for='blurbfield'>Blurb*</Label>
           <Input
             type='text'
             name='blurb'
             id='blurbfield'
             defaultValue={this.state.formFields.blurb}
             maxLength={Constants.MAX_BLURB_LENGTH}
+            required
           />
+
+          <h3 id='header2'>More info</h3>
 
           <Label for='descfield'>Description</Label>
           <Input

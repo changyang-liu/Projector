@@ -3,7 +3,7 @@ export const PROJECT_LIST_URL = 'http://localhost:8080/projects/';
 // Project form limits
 export const MAX_USER_LENGTH = 100;
 export const MAX_PROJECT_LENGTH = 100;
-export const MAX_BLURB_LENGTH = 200;
+export const MAX_BLURB_LENGTH = 125;
 
 // Authentication
 export const ACCESS_TOKEN_REFRESH_RATE = 1000 * 60 * 4.5;
