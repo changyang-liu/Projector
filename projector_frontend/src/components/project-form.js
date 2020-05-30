@@ -80,7 +80,7 @@ class ProjectForm extends Component {
     const canRenderCategory = ((this.props.edit && this.state.formFields.category !== "") || !this.props.edit);
 
     return(
-      <Form onSubmit={this.handleSubmit}>
+      <Form onSubmit={this.handleSubmit} style={{"margin-top": "1em", "margin-bottom": "1em"}}>
         <FormGroup>
           <h3>Basic details</h3>
           <Label for='namefield'>Project Name*</Label>
