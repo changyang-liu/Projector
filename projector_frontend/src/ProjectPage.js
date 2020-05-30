@@ -47,7 +47,7 @@ class ProjectPage extends Component {
             alert("Please login or create an account first to join!");
             return;
         }
-        
+
         const response = await fetch(`${Constants.PROJECT_LIST_URL}${this.props.match.params.projectId}/join`, {
             method: 'PATCH',
             headers: {
@@ -67,6 +67,48 @@ class ProjectPage extends Component {
             })
         } else {
             alert("Sorry, an error has occured in your request. Please try again later.");
+        }
+    }
+
+    renderButtons = (data) => {
+        if(!this.props.user)
+            return
+        const isMember = data.members.find(member => member.id === this.props.user.id)
+        const pendingRequest = data.join_requests.find(request => request.id === this.props.user.id)
+
+        if(this.props.user.email === data.owner.email){
+            // Show the edit button for the project owner
+            return (<Link
+                  style={{ marginTop: 16 }}
+                  className="btn btn-secondary"
+                  to={`/projects/${this.props.match.params.projectId}/edit`}
+              >
+                Edit
+            </Link>)
+        }else if(!isMember && !pendingRequest){
+            // Show the join button if the user is not a member nor in the join request list
+            return (<Button
+                  color="primary"
+                  onClick={() => this.processJoinOrAccept(Constants.JOIN_REQUEST_CODE, {
+                      id: this.props.user.id,
+                      username: this.props.user.email,
+                      email: this.props.user.email,
+                  }
+              )}>
+                Join {data.name}!
+            </Button>)
+        }else if(pendingRequest){
+            // Show the cancel join button if the user is in the join request list
+            return (<Button
+                  color="primary"
+                  onClick={() => this.processJoinOrAccept(Constants.CANCEL_JOIN_CODE, {
+                      id: this.props.user.id,
+                      username: this.props.user.email,
+                      email: this.props.user.email,
+                  }
+              )}>
+                Cancel Join
+            </Button>)
         }
     }
 
@@ -113,41 +155,10 @@ class ProjectPage extends Component {
                     <p>
                         Status <Badge color="secondary">{data.status}</Badge>
                     </p>
-                    {(this.props.user && this.props.user.email === data.owner.email) ? 
-                        // Show the edit button for the project owner
-                        (<Link
-                              style={{ marginTop: 16 }}
-                              className="btn btn-secondary"
-                              to={`/projects/${this.props.match.params.projectId}/edit`}
-                          >
-                            Edit
-                        </Link>) : 
-                    ((this.props.user && !data.members.find(member => member.id === this.props.user.id) &&
-                      !data.join_requests.find(request => request.id === this.props.user.id)) ?
-                        // Show the join button if the user is not a member nor in the join request list
-                        (<Button 
-                              color="primary" 
-                              onClick={() => this.processJoinOrAccept(Constants.JOIN_REQUEST_CODE, {
-                                  id: this.props.user.id,
-                                  username: this.props.user.email,
-                                  email: this.props.user.email,
-                              }
-                          )}>
-                            Join {data.name}!
-                        </Button>) :
-                    (this.props.user &&
-                        // Show the cancel join button if the user is in the join request list
-                        (<Button 
-                              color="primary" 
-                              onClick={() => this.processJoinOrAccept(Constants.CANCEL_JOIN_CODE, {
-                                  id: this.props.user.id,
-                                  username: this.props.user.email,
-                                  email: this.props.user.email,
-                              }
-                          )}>
-                            Cancel Join
-                        </Button>)
-                    ))}
+
+                    {/* Show join and edit buttons conditionally */}
+                    {this.renderButtons(data)}
+
                     <br />
                     <Button color="primary" onClick={this.toggleMemberList}>
                         See Who's Joined
