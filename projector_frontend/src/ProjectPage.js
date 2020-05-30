@@ -170,7 +170,7 @@ class ProjectPage extends Component {
                     <div className="ProjectPage-header-container">
                         <h1 className="ProjectPage-title">{data.name}</h1>
                     </div>
-                    <h5 style={{ marginTop: 16, "text-align": "center" }}>{data.blurb}</h5>
+                    <h5 style={{ marginTop: 16, "textAlign": "center" }}>{data.blurb}</h5>
                     <hr/>
                     <div className="ProjectPage-media-container">
                         {videoId && (

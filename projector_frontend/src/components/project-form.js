@@ -80,7 +80,7 @@ class ProjectForm extends Component {
     const canRenderCategory = ((this.props.edit && this.state.formFields.category !== "") || !this.props.edit);
 
     return(
-      <Form onSubmit={this.handleSubmit} style={{"margin-top": "1em", "margin-bottom": "1em"}}>
+      <Form onSubmit={this.handleSubmit} style={{"marginTop": "1em", "marginBottom": "1em"}}>
         <FormGroup>
           <h3>Basic details</h3>
           <Label for='namefield'>Project Name*</Label>
@@ -114,9 +114,9 @@ class ProjectForm extends Component {
             defaultValue={this.state.formFields.category}
             required
           >
-            {Object.keys(Constants.CATEGORIES).map(e => 
-              <option value={e}>
-                {Constants.CATEGORIES[e].expanded}
+            {Object.keys(Constants.CATEGORIES).map((category, index) => 
+              <option value={category} key={index}>
+                {Constants.CATEGORIES[category].expanded}
               </option>
             )}
           </Input>
