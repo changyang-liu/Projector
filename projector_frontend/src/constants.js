@@ -4,7 +4,7 @@ export const USER_LIST_URL = 'http://localhost:8080/users/';
 // Project form limits
 export const MAX_USER_LENGTH = 100;
 export const MAX_PROJECT_LENGTH = 100;
-export const MAX_BLURB_LENGTH = 200;
+export const MAX_BLURB_LENGTH = 125;
 
 // Project form limits
 export const MAX_NAME_LENGTH = 30;

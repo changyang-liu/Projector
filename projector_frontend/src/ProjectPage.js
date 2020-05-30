@@ -147,10 +147,12 @@ class ProjectPage extends Component {
         return (
             <div className="ProjectPage-container">
                 <div className="ProjectPage-leftpanel">
-                    <img className="card-img" src={data.logo} />
+                    <img className="card-img" src={data.logo} alt="Logo"/>
                     <p style={{ marginTop: 16 }}>Owner: {data.owner.username}</p>
                     <p>
-                        Category <Badge color="secondary">{data.category}</Badge>
+                        Category <Badge color={Constants.CATEGORIES[data.category].color}>
+                            {Constants.CATEGORIES[data.category].expanded}
+                        </Badge>
                     </p>
                     <p>
                         Status <Badge color="secondary">{data.status}</Badge>
@@ -168,7 +170,7 @@ class ProjectPage extends Component {
                     <div className="ProjectPage-header-container">
                         <h1 className="ProjectPage-title">{data.name}</h1>
                     </div>
-                    <h5 style={{ marginTop: 16 }}>{data.blurb}</h5>
+                    <h5 style={{ marginTop: 16, "textAlign": "center" }}>{data.blurb}</h5>
                     <hr/>
                     <div className="ProjectPage-media-container">
                         {videoId && (

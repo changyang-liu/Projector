@@ -38,7 +38,7 @@ class Project(models.Model):
 
     #Optional project fields
     logo = models.ImageField(upload_to='logos', default="default_logos/project_default.png")
-    blurb = models.TextField(max_length=200, blank=True)
+    blurb = models.TextField(max_length=125, blank=True)
     description = models.TextField(blank=True)
     video = models.URLField(blank=True) #Youtube URL
     deck = models.URLField(blank=True) #Google slides URL

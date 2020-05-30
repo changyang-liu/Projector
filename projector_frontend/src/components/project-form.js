@@ -80,7 +80,7 @@ class ProjectForm extends Component {
     const canRenderCategory = ((this.props.edit && this.state.formFields.category !== "") || !this.props.edit);
 
     return(
-      <Form onSubmit={this.handleSubmit}>
+      <Form onSubmit={this.handleSubmit} style={{"marginTop": "1em", "marginBottom": "1em"}}>
         <FormGroup>
           <h3>Basic details</h3>
           <Label for='namefield'>Project Name*</Label>
@@ -114,24 +114,25 @@ class ProjectForm extends Component {
             defaultValue={this.state.formFields.category}
             required
           >
-            {Object.keys(Constants.CATEGORIES).map(e => 
-              <option value={e}>
-                {Constants.CATEGORIES[e].expanded}
+            {Object.keys(Constants.CATEGORIES).map((category, index) => 
+              <option value={category} key={index}>
+                {Constants.CATEGORIES[category].expanded}
               </option>
             )}
           </Input>
           }
-
-          <h3 id='header2'>More info</h3>
-
-          <Label for='blurbfield'>Blurb</Label>
+          
+          <Label for='blurbfield'>Blurb*</Label>
           <Input
             type='text'
             name='blurb'
             id='blurbfield'
             defaultValue={this.state.formFields.blurb}
             maxLength={Constants.MAX_BLURB_LENGTH}
+            required
           />
+
+          <h3 id='header2'>More info</h3>
 
           <Label for='descfield'>Description</Label>
           <Input
