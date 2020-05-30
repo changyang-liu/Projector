@@ -43,10 +43,8 @@ class UserPage extends Component {
             },
             incomplete: true,
         };
-        /*todo: fetch user details from backend and construct person details*/
     }
 
-    //todo: confirm if profile is complete without infinite re-rendering - check if this works
     componentDidMount() {
         fetch(`${Constants.USER_LIST_URL}${this.props.user.id}`)
             .then((resp) => {
