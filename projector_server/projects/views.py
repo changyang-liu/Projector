@@ -1,4 +1,5 @@
 from django.http import HttpResponse, JsonResponse, Http404
+from django.core.exceptions import PermissionDenied
 
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -43,20 +44,26 @@ class JoinProjectView(generics.UpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         project = self.get_object()
-        user = request.data['user']
-        updateType = request.data['type']
+        user = request.data.get('user')
+        updateType = request.data.get('type')
         userObject = User.objects.get(id__exact=user['id'])
 
         if updateType == "Join Request":
             # Only add user to join request list if not already in it
-            if not userObject in project.join_requests.all():
-                project.join_requests.add(userObject)
+            # Users cannot join for each other
+            if request.user not in project.join_requests.all():
+                project.join_requests.add(request.user)
         elif updateType == "Cancel Request":
+            # Only project owner or requester can cancel request
+            if request.user != project.owner and request.user != userObject:
+                raise PermissionDenied
             # Only remove user from join request list if already in it
             if userObject in project.join_requests.all():
                 project.join_requests.remove(userObject)
         elif updateType == "Accept":
-            #TODO: Have to relate user to project?
+            # Only owner can accept
+            if request.user != project.owner:
+                raise PermissionDenied
             project.join_requests.remove(userObject)
             project.members.add(userObject)
         else:
