@@ -1,0 +1,8 @@
+.UserPage {
+    min-height: 50vh;
+    padding-top: 10px; /*margin always pushes the footer down*/
+}
+
+.card:hover {
+    cursor: default;
+}
