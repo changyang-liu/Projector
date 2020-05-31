@@ -53,10 +53,8 @@ class UserForm extends Component {
 
     handleSubmit = async (event) => {
         event.preventDefault();
-        const {username, email, first_name, last_name, picture, bio, interests, skills} = this.state;
-        const profile = {picture, bio, interests, skills};
-        const data = {username, email, first_name, last_name, profile}
-        const url = Constants.USER_LIST_URL + this.props.user.id;
+        const data = new FormData(event.target);
+        const url = Constants.USER_LIST_URL + this.props.user.id + '/profile';
         const method = 'PUT';
         const response = await fetch(url, {
             method: method,
@@ -68,8 +66,8 @@ class UserForm extends Component {
         });
         /*todo: fix pushing to server*/
         if (response.status === 200) {
-            const json = await response.json();
-            this.props.history.push('/users/' + json.id.toString());
+            await response.json();
+            this.props.history.push('/profile');
             alert("Profile successfully updated");
         } else {
             alert("Error: failed to submit");
