@@ -47,14 +47,10 @@ class UserForm extends Component {
             });
     }
 
-    handleChange = (event) => {
-        this.setState({[event.target.name]: event.target.value});
-    }
-
     handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.target);
-        const url = Constants.USER_LIST_URL + this.props.user.id + '/profile';
+        const url = Constants.USER_LIST_URL + this.props.user.id + "/profile";
         const method = 'PUT';
         const response = await fetch(url, {
             method: method,
@@ -64,7 +60,6 @@ class UserForm extends Component {
             },
             body: data
         });
-        /*todo: fix pushing to server*/
         if (response.status === 200) {
             await response.json();
             this.props.history.push('/profile');
@@ -91,7 +86,6 @@ class UserForm extends Component {
                         defaultValue={this.state.first_name}
                         maxLength={Constants.MAX_NAME_LENGTH}
                         required
-                        onChange={this.handleChange}
                     />
 
                     <Label for='last_name'>Last Name*</Label>
@@ -103,7 +97,6 @@ class UserForm extends Component {
                         defaultValue={this.state.last_name}
                         maxLength={Constants.MAX_NAME_LENGTH}
                         required
-                        onChange={this.handleChange}
                     />
 
                     <Label for='email'>Email*</Label>
@@ -125,7 +118,6 @@ class UserForm extends Component {
                         placeholder="What's your favourite tech stack?"
                         defaultValue={this.state.skills}
                         maxLength={Constants.MAX_USER_FIELD_LENGTH}
-                        onChange={this.handleChange}
                     />
 
                     <Label for='interests'>Interests*</Label>
@@ -136,7 +128,6 @@ class UserForm extends Component {
                         placeholder="What projects would you like to work on?"
                         defaultValue={this.state.interests}
                         maxLength={Constants.MAX_USER_FIELD_LENGTH}
-                        onChange={this.handleChange}
                     />
 
                     <Label for='bio'>Bio</Label>
@@ -147,7 +138,6 @@ class UserForm extends Component {
                         placeholder='Tell us more about yourself!'
                         defaultValue={this.state.bio}
                         maxLength={Constants.MAX_BIO_LENGTH}
-                        onChange={this.handleChange}
                     />
 
                     <Label for='picture'>Upload Profile Picture</Label>
@@ -157,7 +147,7 @@ class UserForm extends Component {
                         id='picture'
                         placeholder="Link your picture here (.jpg or .png)"
                         defaultValue={this.state.picture}
-                        onChange={this.handleChange}
+
                         /*todo?: implement image preview?*/
                     />
                 </FormGroup>
