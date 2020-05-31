@@ -33,7 +33,7 @@ export default class MemberModal extends Component {
 
     // Add owner to top of the list
     let memberListElements = [
-      <ListGroupItem key={0} tag="a" href="/" action>
+      <ListGroupItem key={0} tag="a" href={`/users/${owner.id}`} action>
         {owner.username} <Badge pill>Owner</Badge>
       </ListGroupItem>
     ];
@@ -41,7 +41,7 @@ export default class MemberModal extends Component {
     // Show join requests next, but only if the viewer is the owner
     if(user && user.id === owner.id) {
       memberListElements = memberListElements.concat(sortedJoinRequests.map((request, i) => (
-        <ListGroupItem key={i+1} tag="a" href="/" action>
+        <ListGroupItem key={i+1} tag="a" href={`/users/${request.id}`} action>
           <span style={{"verticalAlign": "middle"}}>
             {request.username}
           </span>
@@ -89,7 +89,7 @@ export default class MemberModal extends Component {
 
     // Add other actual members afterward
     memberListElements = memberListElements.concat(sortedMembers.map((member, i) => (
-      <ListGroupItem key={i+memberListElements.length+1} tag="a" href="/" action>
+      <ListGroupItem key={i+memberListElements.length+1} tag="a" href={`/users/${member.id}`} action>
         {member.username}
       </ListGroupItem>
     )));

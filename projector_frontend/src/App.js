@@ -224,10 +224,13 @@ class App extends Component {
                        render={props => <ProjectForm {...props} user={this.state.user} edit={true}/>}
                 />
                 <Route exact path='/profile'
-                       render={props => <UserPage {...props} user={this.state.user} />}
+                       render={props => <UserPage {...props} user={this.state.user} visiting={false}/>}
                 />
                 <Route exact path='/profile/edit'
                        render={props => <UserForm {...props} user={this.state.user}/>}
+                />
+                <Route exact path='/users/:userId'
+                       render={props => <UserPage {...props} user={this.state.user} visiting={true}/>}
                 />
               </Switch>
             </Router>

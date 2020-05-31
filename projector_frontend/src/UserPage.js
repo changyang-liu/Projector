@@ -7,10 +7,13 @@ import {
 import * as Constants from './constants';
 //import UserForm from './components/user-form';
 
-function Profile({person, projects}) {
+function Profile({person, projects}, visiting) {
     return (
         <div className="Profile">
-            <h1 className="Name">Hi, {person.name}</h1>
+            {!visiting ? 
+                <h1 className="Name">Hi, {person.name}</h1> : 
+                <h1 className="Name">{person.name}</h1>
+            }
             <p className="Email">{person.email}</p>
             <p className="Skills">My skills: {person.skills}</p>
             <p className="Interests">Project interests: {person.interests}</p>
@@ -40,7 +43,12 @@ class UserPage extends Component {
     }
 
     componentDidMount() {
-        fetch(`${Constants.USER_LIST_URL}${this.props.user.id}`)
+        let userToGet;
+        if(this.props.visiting)
+            userToGet = this.props.match.params.userId;
+        else
+            userToGet = this.props.user.id;
+        fetch(`${Constants.USER_LIST_URL}${userToGet}`)
             .then((resp) => {
                 if (!resp.ok) {
                     // Invokes the .catch() handler
@@ -85,20 +93,19 @@ class UserPage extends Component {
                     <CardImg top width="100%" style={{maxHeight: 250, maxWidth: 250}} src={this.state.person.image} alt="Profile Picture"/>
                     <CardBody>
                         <CardText>
-                            <Profile person={this.state.person}/>
-                            {(() => {
-                                if (this.state.incomplete) {
-                                    return (
-                                        <div>
-                                            <h5>Your profile seems incomplete!</h5>
-                                            <h6>Please complete your profile below:</h6>
-                                        </div>)
-                                }
-                            })()}
+                            <Profile person={this.state.person} visiting={this.props.visiting}/>
+                            {!this.props.visiting && this.state.incomplete && (
+                                <div>
+                                    <h5>Your profile seems incomplete!</h5>
+                                    <h6>Please complete your profile below:</h6>
+                                </div>
+                            )}
                         </CardText>
-                        <Button><NavLink href="/profile/edit" style={{color: 'white', textDecoration: 'none'}}>
-                            Edit Profile
-                        </NavLink></Button>
+                        { !this.props.visiting && (
+                            <Button><NavLink href="/profile/edit" style={{color: 'white', textDecoration: 'none'}}>
+                                Edit Profile
+                            </NavLink></Button>
+                        )}
                     </CardBody>
                 </Card>
             </div>
