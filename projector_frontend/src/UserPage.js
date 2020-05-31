@@ -7,12 +7,6 @@ import {
 import * as Constants from './constants';
 //import UserForm from './components/user-form';
 
-function Image(props) {
-    return (
-        <div className="Image" style={{backgroundImage: 'url(' + props.src + ')'}}></div>
-    );
-}
-
 function Profile({person, projects}) {
     return (
         <div className="Profile">
@@ -88,7 +82,7 @@ class UserPage extends Component {
         return (
             <div className="UserPage">
                 <Card style={{width: "80%", height: "80%"}} className="mx-auto my-auto">
-                    <CardImg top width="50%" src={this.state.person.image} alt="Profile Picture"/>
+                    <CardImg top width="100%" style={{maxHeight: 250, maxWidth: 250}} src={this.state.person.image} alt="Profile Picture"/>
                     <CardBody>
                         <CardText>
                             <Profile person={this.state.person}/>
