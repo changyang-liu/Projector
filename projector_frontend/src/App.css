@@ -130,8 +130,3 @@
 .navbar-toggler {
   margin-top: 0;
 }
-
-.UserPage {
-  min-height: 50vh;
-  padding-top: 10px; /*margin always pushes the footer down*/
-}

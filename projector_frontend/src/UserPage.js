@@ -4,19 +4,20 @@ import {
     Card, CardImg, CardBody, Button, NavLink
 } from 'reactstrap';
 import * as Constants from './constants';
-//import UserForm from './components/user-form';
+import './UserPage.css';
 
 function Profile({person, projects}, visiting) {
     return (
         <div className="Profile">
             {!visiting ? 
-                <div>Hi, {person.name}</div> : 
-                <div id="Profile-name">{person.name}</div>
+                <div><h1>Hi, {person.name}</h1></div> :
+                <div id="Profile-name"><h1>{person.name}</h1></div>
             }
+            {/*todo?: optional relationship markers - e.g. Leader, Teammate*/}
             <p className="Email">{person.email}</p>
-            <p className="Skills">My skills: {person.skills}</p>
-            <p className="Interests">Project interests: {person.interests}</p>
-            <p className="Bio">About me: {person.bio}</p>
+            <p className="Skills"><b>My skills:</b> {person.skills}</p>
+            <p className="Interests"><b>Project interests:</b> {person.interests}</p>
+            <p className="Bio"><b>About me:</b> {person.bio}</p>
             <div className="User-Projects">
             </div>
         </div>
