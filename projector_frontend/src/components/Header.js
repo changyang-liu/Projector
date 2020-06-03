@@ -29,11 +29,6 @@ const Header = (props) => {
                         <NavLink href="/profile">My Profile</NavLink> {/*todo: fix linking*/}
                     </NavItem>
                 </DropdownItem>
-                <DropdownItem>
-                    <NavItem>
-                        <NavLink href="/ProjectPage/">My Projects</NavLink> {/*todo: fix linking*/}
-                    </NavItem>
-                </DropdownItem>
 
                 <DropdownItem divider />
                 <DropdownItem>
