@@ -7,7 +7,6 @@ import * as Constants from './constants';
 import './UserPage.css';
 
 function ProjectList({projects}) {
-    console.log(projects);
     return (
         <ListGroup style={{width: "70%"}}>
             {
