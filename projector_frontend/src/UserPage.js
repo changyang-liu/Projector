@@ -6,7 +6,7 @@ import {
 import * as Constants from './constants';
 import './UserPage.css';
 
-function Profile({person, projects}, visiting) {
+function Profile({person, projects, visiting}) {
     return (
         <div className="Profile">
             {!visiting ? 
