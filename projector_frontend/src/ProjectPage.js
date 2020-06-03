@@ -6,6 +6,7 @@ import * as Constants from './constants';
 import { Link } from 'react-router-dom';
 import YouTube from 'react-youtube';
 import MemberModal from './components/MemberModal';
+import { FaThumbsUp } from 'react-icons/fa';
 
 class ProjectPage extends Component {
     constructor(props) {
@@ -16,6 +17,7 @@ class ProjectPage extends Component {
         };
         this.toggleMemberList = this.toggleMemberList.bind(this);
         this.processJoinOrAccept = this.processJoinOrAccept.bind(this);
+        this.updateLikes = this.updateLikes.bind(this);
     }
 
     componentDidMount() {
@@ -112,6 +114,34 @@ class ProjectPage extends Component {
         }
     }
 
+    updateLikes = async () => {
+        if(!this.props.user) {
+            alert("Please login or create an account first to like!");
+            return;
+        }
+
+        const response = await fetch(`${Constants.PROJECT_LIST_URL}${this.props.match.params.projectId}/like`, {
+            method: 'PATCH',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.props.user.access_token}`
+            },
+            body: JSON.stringify({
+                user: this.props.user,
+            })
+        });
+        if(response.status === 200) {
+            const data = await response.json();
+            console.log(data);
+            await this.setState({
+                project: { failed: false, data: data }
+            })
+        } else {
+            alert("Sorry, an error has occured in your request. Please try again later.");
+        }
+    }
+
     render() {
         const { project } = this.state;
         if (project === undefined) {
@@ -144,11 +174,16 @@ class ProjectPage extends Component {
             // There's no slides, or the URL is malformed
         }
 
+        let liked = this.props.user && !!data.liked_by.find(user => user.id === this.props.user.id);
         return (
             <div className="ProjectPage-container">
                 <div className="ProjectPage-leftpanel">
                     <img className="card-img" src={data.logo} alt="Logo"/>
                     <p style={{ marginTop: 16 }}>Owner: {data.owner.username}</p>
+                    <div style={{ display: 'flex' }}><FaThumbsUp style={{ marginTop: '2px', color: liked ? "blue" : "black" }} 
+                        onClick={() => !liked ? this.updateLikes() : null} />
+                        <p style={{ marginLeft: '8px' }}>{data.likes}</p>
+                    </div>
                     <p>
                         Category <Badge color={Constants.CATEGORIES[data.category].color}>
                             {Constants.CATEGORIES[data.category].expanded}
