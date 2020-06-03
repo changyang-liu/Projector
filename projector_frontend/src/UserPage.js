@@ -1,12 +1,26 @@
 import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
-    Card, CardImg, CardBody, Button, NavLink
+    Card, CardImg, CardBody, Button, NavLink, ListGroup, ListGroupItem
 } from 'reactstrap';
 import * as Constants from './constants';
 import './UserPage.css';
 
-function Profile({person, projects, visiting}) {
+function ProjectList({projects}) {
+    console.log(projects);
+    return (
+        <ListGroup style={{width: "70%"}}>
+            {
+                projects.map(([name, id]) => {
+                    const url = "/projects/" + id;
+                    return <ListGroupItem><NavLink href={url}>{name}</NavLink></ListGroupItem>
+                })
+            }
+        </ListGroup>
+    )
+}
+
+function Profile({person, visiting}) {
     return (
         <div className="Profile">
             {!visiting ? 
@@ -18,8 +32,6 @@ function Profile({person, projects, visiting}) {
             <p className="Skills"><b>My skills:</b> {person.skills}</p>
             <p className="Interests"><b>Project interests:</b> {person.interests}</p>
             <p className="Bio"><b>About me:</b> {person.bio}</p>
-            <div className="User-Projects">
-            </div>
         </div>
     );
 }
@@ -68,6 +80,15 @@ class UserPage extends Component {
                         }
                     });
                 }
+                let projects = [];
+                for (let i = 0; i < data.owned_projects.length; i++) {
+                    let currproject = data.owned_projects[i];
+                    projects.push([currproject.name,currproject.id]);
+                }
+                for (let i = 0; i < data.member_of.length; i++) {
+                    let curproject = data.member_of[i];
+                    projects.push([curproject.name,curproject.id]);
+                }
                 this.setState({
                     person: {
                         name: data.first_name + " " + data.last_name,
@@ -76,7 +97,7 @@ class UserPage extends Component {
                         skills: data.profile.skills,
                         interests: data.profile.interests,
                         bio: data.profile.bio,
-                        projects: [],
+                        projects: projects,
                         image: data.profile.picture,
                     },
                     incomplete: incomplete,
@@ -108,6 +129,13 @@ class UserPage extends Component {
                         )}
                     </CardBody>
                 </Card>
+                <br/>
+                {this.state.person.projects ?
+                    <div style={{width: "80%"}} className="mx-auto my-auto">
+                        <h4 className="pl-2">My Projects</h4>
+                        <ProjectList projects={this.state.person.projects}/>
+                    </div> : <div/>
+                }
             </div>
         );
     }
