@@ -71,3 +71,22 @@ class JoinProjectView(generics.UpdateAPIView):
             return Response(content, status=400)
 
         return super().update(request, *args, **kwargs)
+
+class LikesView(generics.UpdateAPIView):
+    """
+    View for liking a project
+    """
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+
+    def update(self, request, *args, **kwargs):
+        project = self.get_object()
+        if request.user not in project.liked_by.all():
+            project.liked_by.add(request.user)
+            project.likes = project.likes + 1
+            project.save()
+        else:
+            content = {"error": "Already liked this project"}
+            return Response(content, status=400)
+        return super().update(request, *args, **kwargs)

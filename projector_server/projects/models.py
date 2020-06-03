@@ -13,6 +13,8 @@ class Project(models.Model):
     owner = models.ForeignKey(User, related_name='owned_projects', null=True, on_delete=models.SET_NULL)
     members = models.ManyToManyField(User, related_name='member_of', blank=True)
     join_requests = models.ManyToManyField(User, related_name='requesting_join_to', blank=True)
+    likes = models.IntegerField(default=0)
+    liked_by = models.ManyToManyField(User, related_name='liked_projects', blank=True)
 
     #Choice fields
     class ProjectCategory(models.TextChoices):
