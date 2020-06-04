@@ -49,7 +49,6 @@ class UserPage extends Component {
                 projects: null,
                 image: null,
             },
-            incomplete: true,
         };
     }
 
@@ -70,7 +69,7 @@ class UserPage extends Component {
                 return resp.json();
             })
             .then((data) => {
-                const incomplete = () => {
+                /*const incomplete = () => {
                     Object.keys(this.state.person).map((key) => {
                         if (!this.state.person[key]) {
                             return true;
@@ -78,7 +77,7 @@ class UserPage extends Component {
                             return false;
                         }
                     });
-                }
+                }*/
                 let projects = [];
                 for (let i = 0; i < data.owned_projects.length; i++) {
                     let currproject = data.owned_projects[i];
@@ -99,7 +98,6 @@ class UserPage extends Component {
                         projects: projects,
                         image: data.profile.picture,
                     },
-                    incomplete: incomplete,
                 });
             })
             .catch((error) => {
@@ -109,13 +107,24 @@ class UserPage extends Component {
     }
 
     render() {
+        const incomplete = (() => {
+            const objects = Object.keys(this.state.person).map((key) => {
+                if (!this.state.person[key]) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            return objects.includes(true);
+        })();
+
         return (
             <div className="UserPage">
                 <Card style={{width: "80%", height: "80%"}} className="mx-auto my-auto">
                     <CardImg top width="100%" style={{maxHeight: 250, maxWidth: 250}} src={this.state.person.image} alt="Profile Picture"/>
                     <CardBody>
                         <Profile person={this.state.person} visiting={this.props.visiting}/>
-                        {!this.props.visiting && this.state.incomplete && (
+                        {!this.props.visiting && incomplete && (
                             <div>
                                 <h5>Your profile seems incomplete!</h5>
                                 <h6>Please complete your profile below:</h6>
