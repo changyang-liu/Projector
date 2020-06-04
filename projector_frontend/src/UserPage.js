@@ -46,9 +46,9 @@ class UserPage extends Component {
                 skills: null,
                 interests: null,
                 bio: null,
-                projects: null,
                 image: null,
             },
+            projects: null,
         };
     }
 
@@ -69,15 +69,6 @@ class UserPage extends Component {
                 return resp.json();
             })
             .then((data) => {
-                /*const incomplete = () => {
-                    Object.keys(this.state.person).map((key) => {
-                        if (!this.state.person[key]) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    });
-                }*/
                 let projects = [];
                 for (let i = 0; i < data.owned_projects.length; i++) {
                     let currproject = data.owned_projects[i];
@@ -95,9 +86,9 @@ class UserPage extends Component {
                         skills: data.profile.skills,
                         interests: data.profile.interests,
                         bio: data.profile.bio,
-                        projects: projects,
                         image: data.profile.picture,
                     },
+                    projects: projects,
                 });
             })
             .catch((error) => {
@@ -138,10 +129,10 @@ class UserPage extends Component {
                     </CardBody>
                 </Card>
                 <br/>
-                {this.state.person.projects ?
+                {this.state.projects ?
                     <div style={{width: "80%"}} className="mx-auto my-auto">
                         <h4 className="pl-2">My Projects</h4>
-                        <ProjectList projects={this.state.person.projects}/>
+                        <ProjectList projects={this.state.projects}/>
                     </div> : <div/>
                 }
             </div>
