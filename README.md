@@ -2,6 +2,8 @@
 
 Web application to post project ideas and connect people with projects
 
+####[Video Demonstration](https://youtu.be/IYBb8gSut6k "video demo")
+
 ## Instructions
 
 This project demo will be run locally. The frontend and backend need to be run separately in different terminal windows.
