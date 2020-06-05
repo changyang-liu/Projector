@@ -2,7 +2,7 @@
 
 Web application to post project ideas and connect people with projects
 
-[Video Demonstration](https://youtu.be/IYBb8gSut6k "video demo")
+<a href="https://youtu.be/IYBb8gSut6k" target="_blank">Video demo</a>
 
 ## Instructions
 
